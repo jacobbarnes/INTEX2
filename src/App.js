@@ -6,15 +6,11 @@ import './App.css';
 import * as bs from 'react-bootstrap'
 import Header from './header'
 import Left from './Left'
-import Right from './Right'
 import Footer from './Footer'
-import About from './About'
-import Help from './help'
-import Categories from './Categories'
-import ProductDetail from './ProductDetail'
-import Cart from './cart'
-import Receipt from './Receipt'
-import CheckoutController from './checkout-starter'
+import Creator from './Creator'
+import Search from './Search'
+import Campaign from './CampaignDetail'
+
 //import { useRouteMatch } from 'react-router-dom'
 
 //test
@@ -30,41 +26,30 @@ function App(props) {
           </bs.Col>
         </bs.Row>
         <bs.Row noGutters className='flex-grow-1'>
-          <bs.Col md='2' style={{ backgroundColor: 'lightgray'}}>
-            <Left />
-          </bs.Col>
-          <bs.Col md='8' style={{ backgroundColor: ''}} className='px-2'>
-            <Switch>
-              <Route path='/about'>
-                <About />
-              </Route>
-              <Route path='/help'>
-                <Help />
-              </Route>
-              <Route path='/category/:catName'>
-                <Categories />
-              </Route>
-              <Route path='/product'>
-                <ProductDetail />
-              </Route>
-              <Route path='/cart'>
-                <Cart />
-              </Route>
-              <Route path='/checkout'>
-                <CheckoutController />
-              </Route>
-              <Route path='/receipt'>
-                <Receipt />
-              </Route>
-              <Route path='/'>
-                <Categories />
-              </Route>
-              
-            </Switch>
-          </bs.Col>
-          <bs.Col md='2' style={{ backgroundColor: 'lightblue'}}>
-            <Right />
-          </bs.Col>
+          <Switch>
+            <Route path='/creator'>
+              <Creator />
+            </Route>
+            <Route path='/search'>
+              <bs.Col md='2' style={{ backgroundColor: 'lightgray' }}>
+                <Left />
+              </bs.Col>
+              <bs.Col md='10' style={{ backgroundColor: 'white' }}>
+                <Search />
+              </bs.Col>
+            </Route>
+            <Route path='/campaign'>
+              <Campaign />
+            </Route>
+            <Route path='/'>
+            <bs.Col md='2' style={{ backgroundColor: 'lightgray' }}>
+                <Left />
+              </bs.Col>
+              <bs.Col md='10' style={{ backgroundColor: 'white' }}>
+                <Search />
+              </bs.Col>
+            </Route>
+          </Switch>
         </bs.Row>
         <bs.Row noGutters className="flex-grow-0 flex-shrink-0">
           <bs.Col className='px-3 py-2' style={{ backgroundColor: '#CC99CC'}}>
