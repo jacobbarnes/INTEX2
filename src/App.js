@@ -11,11 +11,13 @@ import Creator from './Creator'
 import Search from './Search'
 import Campaign from './CampaignDetail'
 import Calculator from './calculator'
+import Login from './login'
+import Signup from './signup'
+import Home from './home'
 
 //import { useRouteMatch } from 'react-router-dom'
 
 //test
-
 
 function App(props) {
   return (
@@ -28,6 +30,14 @@ function App(props) {
         </bs.Row>
         <bs.Row noGutters className='flex-grow-1'>
           <Switch>
+            <Route path="/login">
+              <Login/>
+              <Home/>
+            </Route>
+            <Route path="/Signup">
+                <Signup/>
+                <Home/>
+            </Route>
             <Route path='/creator'>
               <Creator />
             </Route>
@@ -46,17 +56,12 @@ function App(props) {
               <Calculator />
             </Route>
             <Route path='/'>
-            <bs.Col md='2' style={{ backgroundColor: 'lightgray' }}>
-                <Left />
-              </bs.Col>
-              <bs.Col md='10' style={{ backgroundColor: 'white' }}>
-                <Search />
-              </bs.Col>
+              <Home/>
             </Route>
           </Switch>
         </bs.Row>
         <bs.Row noGutters className="flex-grow-0 flex-shrink-0">
-          <bs.Col className='px-3 py-2' style={{ backgroundColor: 'lightgreen'}}>
+          <bs.Col className='px-3 py-2' >
             <Footer />
           </bs.Col>
         </bs.Row>

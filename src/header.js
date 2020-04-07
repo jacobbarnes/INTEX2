@@ -12,6 +12,7 @@ function Header(props) {
                 <bs.Nav className="mr-auto">
                     <bs.Image src={SiteIcon} style={{height:'3rem', width: '3rem'}} roundedCircle />
                     <Link to='/' className='nav-link mt-2'>Home</Link>
+                    <Link to='/search' className='nav-link mt-2'>Search Campaigns</Link>
                     <Link to='/calculator' className='nav-link mt-2'>Success Calculator</Link>
                 </bs.Nav>
                 <bs.Nav>
@@ -20,6 +21,7 @@ function Header(props) {
                         <bs.NavDropdown.Item href="#action/3.3">Preferences</bs.NavDropdown.Item>
                         <bs.NavDropdown.Item href="#action/3.2">Logout</bs.NavDropdown.Item>
                     </bs.NavDropdown>
+                    <Link to={"/Login"} className="navbar btn btn-dark">Log in</Link>
                 </bs.Nav>
             </bs.Navbar.Collapse>
         </bs.Navbar>
