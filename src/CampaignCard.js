@@ -10,7 +10,7 @@ function CampaignCard(props) {
                 height: '300px', 
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
-                backgroundImage:'url(' + props.campaign.img + ')',
+                backgroundImage:'url(' + props.campaign.campaign_image_url + ')',
                 backgroundSize: 'cover',
                 
                 }}></div>
@@ -18,8 +18,9 @@ function CampaignCard(props) {
             <bs.Card.Body>
                 <bs.Card.Title>{props.campaign.title}</bs.Card.Title>
                 <bs.Card.Text>
-                    <p>{props.campaign.current_amount + "/" + props.campaign.goal}</p>
-                    Description will go here
+                    {`$${props.campaign.current_amount} / $${props.campaign.goal}`}
+                    <br/>
+                    {props.campaign.description.substring(0,70) + "..."}
                     {/* ${props.product.price} */}
                 </bs.Card.Text>
             </bs.Card.Body>
