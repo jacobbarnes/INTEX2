@@ -15,7 +15,7 @@ function CampaignDetail(props) {
 
     if (c == null){
         return(
-            <div className="ml-4">Campaign not found</div>
+            <div className="ml-4">Campaign {match.params.cid} not found</div>
         )
     }
     else{

@@ -10,6 +10,7 @@ import Footer from './Footer'
 import Creator from './Creator'
 import Search from './Search'
 import Campaign from './CampaignDetail'
+import Calculator from './calculator'
 
 //import { useRouteMatch } from 'react-router-dom'
 
@@ -40,6 +41,9 @@ function App(props) {
             </Route>
             <Route path='/campaign'>
               <Campaign />
+            </Route>
+            <Route path='/calculator'>
+              <Calculator />
             </Route>
             <Route path='/'>
             <bs.Col md='2' style={{ backgroundColor: 'lightgray' }}>

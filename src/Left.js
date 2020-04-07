@@ -1,40 +1,39 @@
-import React, { useContext} from 'react'
+import React, { useContext } from 'react'
 import * as bs from 'react-bootstrap'
 import campaigns from './campaigns'
 import AppContext from './context'
-import { Formik, Form, Field} from 'formik'
+import { Formik, Form, Field } from 'formik'
 
 function Left(props) {
     const context = useContext(AppContext);
-    
+
     if (!context.categories) {
         return <div>Loading...</div>;
     }
-    
 
     return (
         <Formik
-        initialValues={{
-            title: '',
-            categories: [],
-            min: "",
-            max: "",
-        }}
-        validateOnChange={false}
-        validateOnBlur={true}
-        validate={values => {
-            const errors = {}
-            if (values.name === ""){errors.name = "Name is required"}
-            return errors
-        }}
-        onSubmit={async (values, actions) => {
-            console.log('submit', values)
-            
-            context.filter(values)
-        }}
-    >{form => (
-        <PaymentForm form={form}/>
-    )}</Formik>
+            initialValues={{
+                title: '',
+                categories: [],
+                min: "",
+                max: "",
+            }}
+            validateOnChange={false}
+            validateOnBlur={true}
+            validate={values => {
+                const errors = {}
+                if (values.name === "") { errors.name = "Name is required" }
+                return errors
+            }}
+            onSubmit={async (values, actions) => {
+                console.log('submit', values)
+
+                context.filter(values)
+            }}
+        >{form => (
+            <PaymentForm form={form} />
+        )}</Formik>
     )
 }
 export default Left
@@ -46,7 +45,7 @@ const PaymentForm = props => {
     // eslint-disable-next-line
     let total = 0
     for (let p of campaigns) {
-        categories[p.category] = (categories[p.category] || 0) +1
+        categories[p.category] = (categories[p.category] || 0) + 1
         total += 1
     }
 
@@ -62,29 +61,29 @@ const PaymentForm = props => {
                         {Object.entries(categories).map(([cat, count], ind) => (
                             <div key={ind}>
                                 <Checkbox name='categories' value={cat} />
-                                <span style={{ fontSize: '12px' }}>
+                                {/* <span style={{ fontSize: '12px' }}>
                                     &nbsp;({count})
-                                </span>
+                                </span> */}
                             </div>
                         ))}
 
-                        <br/><strong>Goal Range:</strong><br/>
+                        <br /><strong>Goal Range:</strong><br />
                         <bs.Container>
                             <bs.Row>
                                 <bs.Col md='6'>
                                     <Input title="Min:" name="min" type="text" disabled={props.form.isSubmitting} />
                                 </bs.Col>
                                 <bs.Col md='6'>
-                                <Input title="Max:" name="max" type="text" disabled={props.form.isSubmitting} />
+                                    <Input title="Max:" name="max" type="text" disabled={props.form.isSubmitting} />
                                 </bs.Col>
                             </bs.Row>
                         </bs.Container>
 
-                        <a href="/#" onClick={() => {window.location.reload()}} style={{textAlign:"center"}}>
+                        <a href="/#" onClick={() => { window.location.reload() }} style={{ textAlign: "center" }}>
                             <div>Clear Filters</div>
-                        </a><br/>
+                        </a><br />
 
-                        <bs.Button type="submit" className="btn btn-primary mb-3" disabled={props.form.isSubmitting} style={{margin:'auto', display:'block'}}>
+                        <bs.Button type="submit" className="btn btn-primary mb-3" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>
                             {props.form.isSubmitting &&
                                 <bs.Spinner
                                     as="span"
@@ -128,7 +127,7 @@ function Checkbox(props) {
     return (
         <Field name={props.name}>
             {({ field, form }) => (
-                <label style={{fontSize:'12px'}} className="mb-0">
+                <label style={{ fontSize: '12px' }} className="mb-0">
                     <input
                         className="mx-2"
                         type="checkbox"
@@ -149,6 +148,6 @@ function Checkbox(props) {
                     {props.value}
                 </label>
             )}
-      </Field>
+        </Field>
     );
-  }
+}
