@@ -23,7 +23,7 @@ function Calculator(props) {
                             validate={values => {
                                 const errors = {}
                                 if (values.title === "") { errors.title = "Title is required" }
-                                console.log("errors",errors)
+                                setSubmitted(false)
                                 return errors
                             }}
                             onSubmit={async (values, actions) => {
@@ -89,7 +89,7 @@ const PaymentForm = props => {
                 </bs.Card>
             </bs.Col>
             <bs.Col md='4' style={{ textAlign: 'center' }}>
-                <i onClick={() => props.form.submitForm()} style={{ cursor: "pointer", marginTop: '150px', color: 'royalblue' }} className="fas fa-arrow-alt-circle-right fa-7x"></i>
+                <i onClick={() => props.form.submitForm()} style={{ cursor: "pointer", marginTop: '150px',}} className="fas fa-arrow-alt-circle-right fa-7x"></i>
             </bs.Col>
             <bs.Col md='4'>
                 <bs.Card className="p-5 shadow bg-white rounded" style={{height:'100%'}}>
