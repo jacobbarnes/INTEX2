@@ -7,7 +7,7 @@ function Footer(props) {
         <bs.Container>
             <bs.Row>
                 <bs.Col style={{textAlign: "center"}}>
-                    &copy; 2020 Arctic
+                    &copy; 2020 Group too sicks
                 </bs.Col>
             </bs.Row>
         </bs.Container>

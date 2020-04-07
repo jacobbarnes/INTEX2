@@ -52,7 +52,7 @@ function App(props) {
           </Switch>
         </bs.Row>
         <bs.Row noGutters className="flex-grow-0 flex-shrink-0">
-          <bs.Col className='px-3 py-2' style={{ backgroundColor: '#CC99CC'}}>
+          <bs.Col className='px-3 py-2' style={{ backgroundColor: 'lightgreen'}}>
             <Footer />
           </bs.Col>
         </bs.Row>
