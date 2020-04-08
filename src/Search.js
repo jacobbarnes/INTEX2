@@ -4,6 +4,7 @@ import AppContext from './context'
 import CampaignCard from './CampaignCard'
 // import { Link } from 'react-router-dom'
 
+
 function Search(props) {
     const context = React.useContext(AppContext)
     
@@ -26,9 +27,9 @@ function Search(props) {
                 ))}
             </bs.Row>
         </bs.Container>
-        {context.campaigns.length > context.numItems &&
+        {/* {context.campaigns.length > context.numItems &&
             <bs.Button onClick={context.loadMore} style={{ marginLeft: 'auto', marginRight: 'auto', display: 'block' }} className={"mb-5"}>Load More</bs.Button>
-        }
+        } */}
         </>
     )
 }

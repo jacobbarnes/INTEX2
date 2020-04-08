@@ -4,7 +4,7 @@ import * as bs from 'react-bootstrap'
 
 function Footer(props) {
     return (
-        <bs.Container>
+        <bs.Container id='footer'>
             <bs.Row>
                 <bs.Col style={{textAlign: "center"}}>
                     &copy; 2020 Group too sicks

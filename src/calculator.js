@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import * as bs from 'react-bootstrap'
 import campaigns from './campaigns'
-import { Formik, Form, Field} from 'formik'
+import { Formik, Form, Field, ErrorMessage} from 'formik'
 
 function Calculator(props) {
     const [submitted, setSubmitted] = useState(false);
@@ -17,11 +17,19 @@ function Calculator(props) {
                                 has_beneficiary: "",
                             }}
                             validateOnChange={false}
-                            validateOnBlur={true}
+                            validateOnBlur={false}
                             validate={values => {
                                 const errors = {}
+                                let regex = /^[0-9]*$/
+
                                 if (values.title === "") { errors.title = "Title is required" }
+                                if (values.goal === "") { errors.goal = "Goal is required" }
+                                if (!regex.test(values.goal) && values.goal !== "") { errors.goal = "Please enter a valid number" }
+                                if (values.description === "") { errors.description = "Description is required" }
+                                if (values.category_id === "") { errors.category_id = "Category is required" }
+                                if (values.has_beneficiary === "") { errors.has_beneficiary = 'Please select "Yes" or "No"'}
                                 setSubmitted(false)
+                                console.log(errors)
                                 return errors
                             }}
                             onSubmit={async (values, actions) => {
@@ -29,7 +37,7 @@ function Calculator(props) {
                                 setSubmitted(true)
                             }}
                         >{form => (
-                            <PaymentForm form={form} submitted={submitted} setSubmitted={setSubmitted}/>
+                            <CalcForm form={form} submitted={submitted} setSubmitted={setSubmitted}/>
                         )}</Formik>
         </bs.Container>
     )
@@ -37,7 +45,7 @@ function Calculator(props) {
 export default Calculator
 
 
-const PaymentForm = props => {
+const CalcForm = props => {
     const categories = {};
 
     // eslint-disable-next-line
@@ -69,12 +77,15 @@ const PaymentForm = props => {
                                         rows="2"
                                         style={{ width: '100%', borderRadius: '5px', borderColor: 'lightgray' }}
                                     />
-                                    <br/><br/>
-                                    <Dropdown name='category_id' value="Category:" /><br/><br/>
+                                    <div className="text-danger"><ErrorMessage name="description"/></div>
+                                    <br/>
+                                    <Dropdown name='category_id' value="Category:" />
+                                    <div className="text-danger"><ErrorMessage name="category_id"/></div><br/>
                                     <strong>Has Beneficiary</strong><br/>
                                     {/* <Checkbox name='has_beneficiary' value="Yes" />
                                     <Checkbox name='has_beneficiary' value="No" /> */}
                                     <Radio name='has_beneficiary' value='Has Beneficiary'></Radio>
+                                    <div className="text-danger"><ErrorMessage name="has_beneficiary"/></div>
                                     
 
                                     {/* <bs.Button type="submit" className="btn btn-primary mt-4" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>

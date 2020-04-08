@@ -23,7 +23,9 @@ function Left(props) {
             validateOnBlur={true}
             validate={values => {
                 const errors = {}
-                if (values.name === "") { errors.name = "Name is required" }
+                let regex = /^[0-9]*$/
+                if (!regex.test(values.min) && values.min !== "") { errors.min = "Please enter a valid number" }
+                if (!regex.test(values.max) && values.max !== "") { errors.max = "Please enter a valid number" }
                 return errors
             }}
             onSubmit={async (values, actions) => {
@@ -32,14 +34,14 @@ function Left(props) {
                 context.filter(values)
             }}
         >{form => (
-            <PaymentForm form={form} />
+            <FilterForm form={form} />
         )}</Formik>
     )
 }
 export default Left
 
 
-const PaymentForm = props => {
+const FilterForm = props => {
     const categories = {};
 
     // eslint-disable-next-line
@@ -124,6 +126,26 @@ const Input = (props) => (
 )
 
 function Checkbox(props) {
+    const categoryIDs = {
+        "Accidents & Emergencies":2,
+        "Animals & Pets":3,
+        "Babies Kids & Family":4,
+        "Business & Entrepreneurs":5,
+        "Celebrations & Events":6,
+        "Community & Neighbors":7,
+        "Creative Arts, Music & Film":8,
+        "Funerals & Memorials":9,
+        "Travel & Adventure":10,
+        "Medical Illness & Healing":11,
+        "Missions Faith & Church":12,
+        "Non-Profits & Charities":13,
+        "Weddings & Honeymoons":14,
+        "Sports Teams & Clubs":16,
+        "Education & Learning":17,
+        "Dreams Hopes & Wishes":20,
+        "unknown":21,
+    }
+
     return (
         <Field name={props.name}>
             {({ field, form }) => (
@@ -132,15 +154,18 @@ function Checkbox(props) {
                         className="mx-2"
                         type="checkbox"
                         {...props}
-                        checked={field.value.includes(props.value)}
+                        checked={field.value.includes(categoryIDs[props.value])}
                         onChange={() => {
-                            if (field.value.includes(props.value)) {
+                            console.log(props.value)
+                            console.log(categoryIDs[props.value])
+                            if (field.value.includes(categoryIDs[props.value])) {
                                 const nextValue = field.value.filter(
-                                    value => value !== props.value
+                                    value => value !== categoryIDs[props.value]
                                 );
                                 form.setFieldValue(props.name, nextValue);
+                                
                             } else {
-                                const nextValue = field.value.concat(props.value);
+                                const nextValue = field.value.concat(categoryIDs[props.value]);
                                 form.setFieldValue(props.name, nextValue);
                             }
                         }}

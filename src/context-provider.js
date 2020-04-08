@@ -22,9 +22,10 @@ export default class AppProvider extends React.Component {
     }
 
     filter = (values) => {
-        console.log("from filter", values)
+        const campaignIDs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,20,]
+        // console.log("from filter", values)
         let filteredCampaigns = campaigns
-        console.log(filteredCampaigns)
+        // console.log(filteredCampaigns)
         
         //filter titles
         if (values.title !== "") {
@@ -40,16 +41,42 @@ export default class AppProvider extends React.Component {
             filteredCampaigns = filteredCampaigns.filter(campaign => parseInt(campaign.goal) <= parseInt(values.max))
         }
 
-        console.log(values.categories)
+        // console.log(values.categories)
         //filter categories
         if (values.categories.length > 0){
-            filteredCampaigns = filteredCampaigns.filter(campaign => values.categories.indexOf(campaign.category) !== -1)
+            if (values.categories.indexOf(21) !== -1){
+                
+                filteredCampaigns = filteredCampaigns.filter(campaign => {
+                    if (values.categories.indexOf(parseInt(campaign.category_id)) !== -1 || campaignIDs.indexOf(parseInt(campaign.category_id)) === -1){
+                        return true
+                    }
+                    else{
+                        return false
+                    }
+                })
+            }
+            else{
+                filteredCampaigns = filteredCampaigns.filter(campaign => values.categories.indexOf(parseInt(campaign.category_id)) !== -1)
+            }
+            console.log(filteredCampaigns)
         }
 
         this.setState({
             campaigns: filteredCampaigns,
             numItems: 15,
         })
+    }
+
+    trackScrolling = () => {
+        const wrappedElement = document.getElementById('footer');
+        if (this.isBottom(wrappedElement)) {
+            console.log('footer bottom reached')
+            this.loadMore()
+        }
+    };
+
+    isBottom(el) {
+        return el.getBoundingClientRect().bottom <= window.innerHeight;
     }
 
     render() {
@@ -62,6 +89,7 @@ export default class AppProvider extends React.Component {
 
     async componentDidMount() {
         // const resp1 = await axios.get('http://localhost:8000/api/category')
+        document.addEventListener('scroll', this.trackScrolling)
         const cats = {}
         for (const c of campaigns) {
             cats[c.id] = c

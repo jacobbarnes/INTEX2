@@ -17,13 +17,14 @@ function CampaignCard(props) {
             {/* <bs.Card.Img variant="top" src={props.campaign.img}/> */}
             <bs.Card.Body className='text-center'>
                 <bs.Card.Title>{props.campaign.title}</bs.Card.Title>
+                <hr/>
                 <bs.Card.Text>
-                    <hr/>
-                    <p className='m1'>{`$${props.campaign.current_amount} / $${props.campaign.goal}`}</p>
-                    <bs.ProgressBar striped  now={props.campaign.current_amount / props.campaign.goal * 100} ></bs.ProgressBar>
+                    <span className='m1'>{`$${props.campaign.current_amount} / $${props.campaign.goal}`}</span>
+                </bs.Card.Text>
+                <bs.ProgressBar striped style={{widht:'100%'}} now={props.campaign.current_amount / props.campaign.goal * 100} ></bs.ProgressBar>
+                <bs.Card.Text>
                     <br/>
                     {props.campaign.description.substring(0,70) + "..."}
-                    {/* ${props.product.price} */}
                 </bs.Card.Text>
             </bs.Card.Body>
             <Link to={`/campaign/${props.campaign.id}`} className="btn btn-primary">Details</Link>
