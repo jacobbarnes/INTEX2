@@ -36,7 +36,7 @@ function Calculator(props) {
                             onSubmit={async (values, actions) => {
                                 console.log('submit', values)
 
-                                const uri = "https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/51dd27bdbc5b484a966a6b9689c624f5/execute?api-version=2.0&details=true"
+                                const uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/51dd27bdbc5b484a966a6b9689c624f5/execute?api-version=2.0&details=true"
                                 const apiKey = "w2Gujfzpgcvj6I14BeuiHt28U6G3H+7LZpwrJrEXtVLA7yjylNs445iUGqg4KT1ziiaEYrSi7aHCkgx1A60gNQ=="
 
                                 let data = 
@@ -53,12 +53,12 @@ function Calculator(props) {
                                         ],
                                         "Values": [
                                           [
-                                            "500000",
-                                            "6",
-                                            "100000",
-                                            "This is my Campaign Title",
-                                            "This is the description for my campaign.  We are going to try and get money to help people that have the coronavirus because that is a big problem in the world right now.  This is for a test request, so hopefully this works.",
-                                            "TRUE",
+                                            "",
+                                            values.category_id,
+                                            values.goal,
+                                            values.title,
+                                            values.description,
+                                            values.has_beneficiary === "yes" ? "TRUE" : "FALSE",
                                           ]
                                         ]
                                       }
