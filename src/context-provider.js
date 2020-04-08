@@ -68,9 +68,10 @@ export default class AppProvider extends React.Component {
     }
 
     trackScrolling = () => {
-        const wrappedElement = document.getElementById('footer');
-        if (this.isBottom(wrappedElement)) {
-            console.log('footer bottom reached')
+        const wrappedElement = document.getElementById('searchContainer');
+
+        if (wrappedElement && this.isBottom(wrappedElement)) {
+            console.log('Bottom reached')
             this.loadMore()
         }
     };

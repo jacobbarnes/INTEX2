@@ -18,7 +18,7 @@ function Search(props) {
 
     return (
         <>
-        <bs.Container>
+        <bs.Container id='searchContainer'>
             <bs.Row>
                 {context.campaigns.slice(0,context.numItems).map((object,ind) => (
                     <bs.Col md='4' key={ind}>
