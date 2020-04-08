@@ -38,7 +38,7 @@ function App(props) {
                 <Home/>
             </Route>
             <Route path='/search'>
-              <bs.Col md='2' style={{ backgroundColor: 'lightgray' }}>
+              <bs.Col md='2' style={{ backgroundColor: '#748591', boxShadow: "inset -2px 5px 5px #555" }}>
                 <Left />
               </bs.Col>
               <bs.Col md='10' style={{ backgroundColor: 'white' }}>

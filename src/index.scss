@@ -1,5 +1,6 @@
 
-$primary:       #004876;
+$primary:       #194c6b;
+$primary2:       #ccd1d4;
 $secondary:     #6c757d ;
 $success:       #10713D ;
 $info:          $success ;
@@ -7,6 +8,7 @@ $warning:       #8C5C03 ;
 $danger:        #9E2821 ;
 $light:         #f8f9fa ;
 $dark:          #868686 ;
+$darker:        #333333 ;
 
 @import "~bootstrap/scss/bootstrap.scss";
 

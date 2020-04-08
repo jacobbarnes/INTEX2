@@ -56,10 +56,14 @@ const FilterForm = props => {
             <bs.Container className="mx-0">
                 <bs.Row>
                     <bs.Col>
-                        <h2>Filter</h2>
-                        <Input title="Title:" name="title" type="text" disabled={props.form.isSubmitting} />
-
-                        <strong>Categories:</strong><br />
+                        <br/>
+                        <hr/>
+                        <h4 className="p-3" style={{boxShadow: "1px 1px 6px #555"}}><b>Show Results for:</b></h4>
+                        <hr/>
+                        <h5 className="border p-2" ><strong>Title</strong></h5>
+                        <Input  name="title" type="text" disabled={props.form.isSubmitting} />
+                        <hr/>
+                        <h5 className="border p-2" ><strong>Categories</strong></h5>
                         {Object.entries(categories).map(([cat, count], ind) => (
                             <div key={ind}>
                                 <Checkbox name='categories' value={cat} />
@@ -68,8 +72,8 @@ const FilterForm = props => {
                                 </span> */}
                             </div>
                         ))}
-
-                        <br /><strong>Goal Range:</strong><br />
+                        <hr/>
+                        <h5 className="border p-2" ><strong>Goal Range</strong></h5>
                         <bs.Container>
                             <bs.Row>
                                 <bs.Col md='6'>
@@ -80,12 +84,12 @@ const FilterForm = props => {
                                 </bs.Col>
                             </bs.Row>
                         </bs.Container>
-
-                        <a href="/#" onClick={() => { window.location.reload() }} style={{ textAlign: "center" }}>
-                            <div>Clear Filters</div>
-                        </a><br />
-
-                        <bs.Button type="submit" className="btn btn-primary mb-3" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>
+                        <br/>
+                        <hr/>
+                        <a href="/#" onClick={() => { window.location.reload() }} style={{ textAlign: "center", color: "#2b2b2b"}}>
+                            <div className="my-3"  style={{boxShadow: "inset 3px 3px 4px #adb6bd", border: "#adb6bd 1px solid", marginLeft: "20%", marginRight: "20%" }}><b>Clear Filters</b></div>
+                        </a>
+                        <bs.Button type="submit" className="btn btn-primary btn-block mb-3 my-5" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>
                             {props.form.isSubmitting &&
                                 <bs.Spinner
                                     as="span"
@@ -149,7 +153,7 @@ function Checkbox(props) {
     return (
         <Field name={props.name}>
             {({ field, form }) => (
-                <label style={{ fontSize: '12px' }} className="mb-0">
+                <label style={{ fontSize: '14px' }} className="mb-0">
                     <input
                         className="mx-2"
                         type="checkbox"

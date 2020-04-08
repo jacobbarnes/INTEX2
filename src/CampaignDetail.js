@@ -10,7 +10,7 @@ function CampaignDetail(props) {
     let history = useHistory()
 
     function goBack() {
-        history.push("/")
+        history.push("/search")
     }
 
     if (c == null){
@@ -20,29 +20,33 @@ function CampaignDetail(props) {
     }
     else{
         return (
-            <bs.Card className="m-5 p-5 shadow bg-white rounded">
-                <div className="float-right">
-                   <img style={{height:"300px"}} alt={c.title} src={c.campaign_image_url} />
-                </div>
-                <h1>{c.title}</h1>
-                <h3>{`$${c.current_amount} / $${c.goal}`}</h3>
-                <div>{c.description}</div>
-                <br/>
-                <bs.Button 
-                    className="bg-warning"
-                    style={{width:"100px", margin:"auto", display:"block"}}
-                    onClick={
-                        e => {
-                            goBack()
-                        }}
-                >
-                    Go Back
-                </bs.Button>
-                <bs.Card className="m-5 p-3 shadow bg-white rounded" style={{position:"absolute",top:"0",right:"0", textAlign:"center"}}>
-                    <h3>Success Score</h3>
-                    <h4 style={{color:"green"}}>10.0</h4>
-                </bs.Card>
-            </bs.Card>
+                <bs.Row className="border-primary m-5">
+                 <bs.Col xs={4}>
+                    <img style={{width:"75%"}} alt={c.title} src={c.campaign_image_url} />
+                 </bs.Col>
+                 <bs.Col>
+                        <h1>{c.title}</h1>
+                        <h3>{`$${c.current_amount} / $${c.goal}`}</h3>
+                        <div>{c.description}</div>
+                        <br/>
+                        <bs.Button 
+                            className="bg-warning"
+                            style={{width:"100px", margin:"auto", display:"block", border: "white 1px solid"}}
+                            onClick={
+                                e => {
+                                    goBack()
+                                }}
+                        >
+                            Go Back
+                        </bs.Button>
+                 </bs.Col>
+                 <bs.Col>
+                    <bs.Card className="m-5 p-3 shadow bg-white rounded" style={{position:"absolute",top:"0",left:"0", textAlign:"center", width: "50%"}}>
+                        <h3>Success Score</h3>
+                        <h4 style={{color:"green"}}>10.0</h4>
+                    </bs.Card>
+                 </bs.Col>
+                </bs.Row>
         )
     }
 }
