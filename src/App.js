@@ -7,7 +7,6 @@ import * as bs from 'react-bootstrap'
 import Header from './header'
 import Left from './Left'
 import Footer from './Footer'
-import Creator from './Creator'
 import Search from './Search'
 import Campaign from './CampaignDetail'
 import Calculator from './calculator'
@@ -37,9 +36,6 @@ function App(props) {
             <Route path="/Signup">
                 <Signup/>
                 <Home/>
-            </Route>
-            <Route path='/creator'>
-              <Creator />
             </Route>
             <Route path='/search'>
               <bs.Col md='2' style={{ backgroundColor: 'lightgray' }}>

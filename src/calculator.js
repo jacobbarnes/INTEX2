@@ -12,9 +12,9 @@ function Calculator(props) {
                             initialValues={{
                                 title: '',
                                 goal: '',
-                                category_id: '',
-                                auto_fb_post_mode: [],
-                                is_charity: [],
+                                description: '',
+                                category_id: "",
+                                has_beneficiary: "",
                             }}
                             validateOnChange={false}
                             validateOnBlur={true}
@@ -56,11 +56,26 @@ const PaymentForm = props => {
                             <bs.Row>
                                 <bs.Col>
                                     <h2>Success Calculator</h2><hr/>
+
+                                    {/* Category_id (dropdown), 
+                                    goal, title, description(text), 
+                                    has_beneficiary (checkbox) */}
                                     <Input title="Title:" name="title" type="text" disabled={props.form.isSubmitting} />
                                     <Input title="Goal:" name="goal" type="text" disabled={props.form.isSubmitting} />
-                                    <Input title="Category ID:" name="category_id" type="text" disabled={props.form.isSubmitting} />
-                                    <Checkbox name='auto_fb_post_mode' value="Auto FaceBook Post" />
-                                    <Checkbox name='is_charity' value="Is Charity" />
+                                    <strong>Description:</strong>
+                                    <Field
+                                        name="description"
+                                        component="textarea"
+                                        rows="2"
+                                        style={{ width: '100%', borderRadius: '5px', borderColor: 'lightgray' }}
+                                    />
+                                    <br/><br/>
+                                    <Dropdown name='category_id' value="Category:" /><br/><br/>
+                                    <strong>Has Beneficiary</strong><br/>
+                                    {/* <Checkbox name='has_beneficiary' value="Yes" />
+                                    <Checkbox name='has_beneficiary' value="No" /> */}
+                                    <Radio name='has_beneficiary' value='Has Beneficiary'></Radio>
+                                    
 
                                     {/* <bs.Button type="submit" className="btn btn-primary mt-4" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>
                                         {props.form.isSubmitting &&
@@ -125,29 +140,94 @@ const Input = (props) => (
     )}</Field>
 )
 
-function Checkbox(props) {
+// function Checkbox(props) {
+//     return (
+//         <Field name={props.name}>
+//             {({ field, form }) => (
+//                 <label className="mb-0">
+//                     <input
+//                         className="mx-2"
+//                         type="checkbox"
+//                         {...props}
+//                         checked={field.value.includes(props.value)}
+//                         onChange={() => {
+//                             if (field.value.includes(props.value)) {
+//                                 const nextValue = field.value.filter(
+//                                     value => value !== props.value
+//                                 );
+//                                 form.setFieldValue(props.name, nextValue);
+//                             } else {
+//                                 const nextValue = field.value.concat(props.value);
+//                                 form.setFieldValue(props.name, nextValue);
+//                             }
+//                         }}
+//                     />
+//                     {props.value}
+//                 </label>
+//             )}
+//         </Field>
+//     );
+// }
+
+function Radio(props) {
     return (
         <Field name={props.name}>
             {({ field, form }) => (
-                <label style={{ fontSize: '12px' }} className="mb-0">
-                    <input
-                        className="mx-2"
-                        type="checkbox"
-                        {...props}
-                        checked={field.value.includes(props.value)}
-                        onChange={() => {
-                            if (field.value.includes(props.value)) {
-                                const nextValue = field.value.filter(
-                                    value => value !== props.value
-                                );
-                                form.setFieldValue(props.name, nextValue);
-                            } else {
-                                const nextValue = field.value.concat(props.value);
-                                form.setFieldValue(props.name, nextValue);
-                            }
-                        }}
-                    />
-                    {props.value}
+                <>
+                    <label>
+                        <input
+                            type="radio"
+                            name={props.name}
+                            value="Yes"
+                            checked={field.value === "yes"}
+                            onChange={() => form.setFieldValue(props.name, "yes")}
+                        /> Yes
+                    </label>
+                    <label className="pl-3">
+                        <input
+                            type="radio"
+                            name={props.name}
+                            value="No"
+                            checked={field.value === "no"}
+                            onChange={() => form.setFieldValue(props.name, "no")}
+                        /> No
+                    </label>
+                </>
+            )}
+        </Field>
+    );
+}
+
+function Dropdown(props) {
+    return (
+        <Field name={props.name}>
+            {({ field, form }) => (
+                <label className="mb-0" style={{width:'100%'}}>
+                    <strong>{props.value}</strong><br/>
+                    <select
+                        name={props.name}
+                        onChange={form.handleChange}
+                        style={{ width:'100%', borderRadius: '5px', borderColor: 'lightgray'}}
+                    >
+                        <option value="" label={"Select a " + props.value} />
+                        <option value="2" label="Accidents & Emergencies" />
+                        <option value="3" label="Animals & Pets" />
+                        <option value="4" label="Babies, Kids & Family" />
+                        <option value="5" label="Business & Entrepreneurs" />
+                        <option value="6" label="Celebrations & Events" />
+                        <option value="7" label="Community & Neighbors" />
+                        <option value="8" label="Creative Arts, Music & Film" />
+                        <option value="9" label="Funerals & Memorials" />
+                        <option value="10" label="Travel & Adventure" />
+                        <option value="11" label="Medical, Illness & Healing" />
+                        <option value="12" label="Missions, Faith & Church" />
+                        <option value="13" label="Non-Profits & Charities" />
+                        <option value="14" label="Weddings & Honeymoons" />
+                        <option value="16" label="Sports, Teams & Clubs" />
+                        <option value="17" label="Education & Learning" />
+                        <option value="20" label="Dreams, Hopes & Wishes" />
+                        <option value="0" label="Other" />
+                    </select>
                 </label>
             )}
         </Field>
