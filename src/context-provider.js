@@ -2,7 +2,7 @@ import React from 'react'
 // import axios from 'axios'
 import AppContext from './context'
 import App from './App'
-import campaigns from './CAMPAIGNS'
+import campaigns from './campaigns'
 
 export default class AppProvider extends React.Component {
     constructor(props) {
