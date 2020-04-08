@@ -8,8 +8,6 @@ function Calculator(props) {
 
     return (
         <bs.Container fluid className='p-0 d-flex flex-column'>
-            
-                
                         <Formik
                             initialValues={{
                                 title: '',
@@ -33,11 +31,6 @@ function Calculator(props) {
                         >{form => (
                             <PaymentForm form={form} submitted={submitted} setSubmitted={setSubmitted}/>
                         )}</Formik>
-                    
-            
-
-
-
         </bs.Container>
     )
 }

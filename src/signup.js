@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Col, Form, Row} from "react-bootstrap"
+import { Card, Col, Form} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 
 export default function Signup() {
