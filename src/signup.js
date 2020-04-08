@@ -29,37 +29,26 @@ export default function Signup() {
             <Card.Text>
                 <div className="input-group mb-3">
                     <div className="input-group-append">
-                        <span className="input-group-text"><i className="fas fa-envelope"></i></span>
+                        <span className="input-group-text"><i className="fas fa-envelope text-dark"></i></span>
                     </div>
                     <input type="email" name="" className="form-control input_pass"  placeholder="email"/>
                 </div>
                 <div className="input-group mb-3">
                     <div className="input-group-append">
-                        <span className="input-group-text"><i className="fas fa-key"></i></span>
+                        <span className="input-group-text"><i className="fas fa-key text-dark"></i></span>
                     </div>
                     <input type="password" name="" className="form-control input_pass"  placeholder="password"/>
                 </div>
                 <div className="input-group mb-2">
                     <div className="input-group-append">
-                        <span className="input-group-text"><i className="fas fa-lock"></i></span>
+                        <span className="input-group-text"><i className="fas fa-lock text-dark"></i></span>
                     </div>
                     <input type="password" name="" className="form-control input_pass" placeholder="Confirm password"/>
                 </div>
-                <br/>
-                <Form.Group className="bg-light py-2 border">
-                <Form.Label className=" border text-center bg-white" style={{width: "80%"}}> Account Type</Form.Label>
-                    <Form.Check className="text-muted"
-                    type="checkbox"
-                    label="Creator"
-                    />
-                    <Form.Check className="text-muted"
-                    type="checkbox"
-                    label="Management"
-                    />
-                </Form.Group>
             <Link to={"/"} className="btn btn-primary mt-2" style={{ width: "100%"}}>Sign up</Link>
             </Card.Text>
             </Form>
+            <hr/>
             <Card.Text>
                 <div className="mt-4">
                     <div className="d-flex justify-content-center links py-2">

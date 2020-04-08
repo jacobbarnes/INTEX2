@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function CampaignCard(props) {
     return (
-        <bs.Card className="my-4 shadow mb-5 bg-white rounded" style={{ width: '100%', height: "90%"}}>
+        <bs.Card className="my-4 shadow mb-5 bg-white rounded p-3" style={{ width: '100%', height: "90%"}}>
             <div style={{
                 width: '100%', 
                 height: '300px', 
@@ -13,7 +13,8 @@ function CampaignCard(props) {
                 backgroundImage:'url(' + props.campaign.campaign_image_url + ')',
                 backgroundSize: 'cover',
                 
-                }}></div>
+                }}>
+                </div>
             {/* <bs.Card.Img variant="top" src={props.campaign.img}/> */}
             <bs.Card.Body className='text-center'>
                 <bs.Card.Title>{props.campaign.title}</bs.Card.Title>
@@ -21,7 +22,7 @@ function CampaignCard(props) {
                 <bs.Card.Text>
                     <span className='m1'>{`$${props.campaign.current_amount} / $${props.campaign.goal}`}</span>
                 </bs.Card.Text>
-                <bs.ProgressBar striped style={{widht:'100%'}} now={props.campaign.current_amount / props.campaign.goal * 100} ></bs.ProgressBar>
+                <bs.ProgressBar striped style={{borderBlockWidth:'100%'}} now={props.campaign.current_amount / props.campaign.goal * 100} ></bs.ProgressBar>
                 <bs.Card.Text>
                     <br/>
                     {props.campaign.description.substring(0,70) + "..."}

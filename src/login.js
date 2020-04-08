@@ -25,13 +25,13 @@ export default function Login() {
             <Card.Text>
                 <div className="input-group mb-3">
                     <div className="input-group-append">
-                        <span className="input-group-text"><i className="fas fa-envelope"></i></span>
+                        <span className="input-group-text"><i className="fas fa-envelope text-dark"></i></span>
                     </div>
                     <input type="text" name="" className="form-control input_user"  placeholder="email"/>
                 </div>
                 <div className="input-group mb-2">
                     <div className="input-group-append">
-                        <span className="input-group-text"><i className="fas fa-key"></i></span>
+                        <span className="input-group-text"><i className="fas fa-key text-dark"></i></span>
                     </div>
                     <input type="password" name="" className="form-control input_pass" placeholder="password"/>
                 </div>

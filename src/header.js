@@ -5,7 +5,7 @@ import SiteIcon from './logo.jpg'
 
 function Header(props) {
     return (
-        <bs.Navbar bg="light" expand="lg">
+        <bs.Navbar bg="light" expand="lg"> {/* style={{background: "#333333"}} */}
             <bs.Navbar.Brand href="/"><strong>GoFundMe Analytics</strong></bs.Navbar.Brand>
             <bs.Navbar.Toggle aria-controls="basic-navbar-nav" />
             <bs.Navbar.Collapse id="basic-navbar-nav">
