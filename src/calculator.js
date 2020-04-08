@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import * as bs from 'react-bootstrap'
 import campaigns from './campaigns'
 import { Formik, Form, Field, ErrorMessage} from 'formik'
+let req = require("request");
 
 function Calculator(props) {
     const [submitted, setSubmitted] = useState(false);
@@ -34,6 +35,55 @@ function Calculator(props) {
                             }}
                             onSubmit={async (values, actions) => {
                                 console.log('submit', values)
+
+                                const uri = "https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/51dd27bdbc5b484a966a6b9689c624f5/execute?api-version=2.0&details=true"
+                                const apiKey = "w2Gujfzpgcvj6I14BeuiHt28U6G3H+7LZpwrJrEXtVLA7yjylNs445iUGqg4KT1ziiaEYrSi7aHCkgx1A60gNQ=="
+
+                                let data = 
+                                {
+                                    "Inputs": {
+                                      "input1": {
+                                        "ColumnNames": [
+                                          "current_amount",
+                                          "category_id",
+                                          "goal",
+                                          "title",
+                                          "description",
+                                          "has_beneficiary"
+                                        ],
+                                        "Values": [
+                                          [
+                                            "500000",
+                                            "6",
+                                            "100000",
+                                            "This is my Campaign Title",
+                                            "This is the description for my campaign.  We are going to try and get money to help people that have the coronavirus because that is a big problem in the world right now.  This is for a test request, so hopefully this works.",
+                                            "TRUE",
+                                          ]
+                                        ]
+                                      }
+                                    },
+                                    "GlobalParameters": {}
+                                  }
+
+                                const options = {
+                                    uri: uri,
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": "Bearer " + apiKey,
+                                    },
+                                    body: JSON.stringify(data)
+                                }
+
+                                req(options, (err, res, body) => {
+                                    if (!err && res.statusCode === 200) {
+                                        console.log("response?", body);
+                                    } else {
+                                        console.log("The request failed with status code: " + res.statusCode);
+                                    }
+                                });
+
                                 setSubmitted(true)
                             }}
                         >{form => (
