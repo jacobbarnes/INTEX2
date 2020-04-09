@@ -67,9 +67,6 @@ const FilterForm = props => {
                         {Object.entries(categories).map(([cat, count], ind) => (
                             <div key={ind}>
                                 <Checkbox name='categories' value={cat} />
-                                {/* <span style={{ fontSize: '12px' }}>
-                                    &nbsp;({count})
-                                </span> */}
                             </div>
                         ))}
                         <hr/>

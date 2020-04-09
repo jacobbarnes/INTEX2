@@ -89,15 +89,12 @@ export default class AppProvider extends React.Component {
     }
 
     async componentDidMount() {
-        // const resp1 = await axios.get('http://localhost:8000/api/category')
         document.addEventListener('scroll', this.trackScrolling)
         const cats = {}
         for (const c of campaigns) {
             cats[c.id] = c
         }
         
-
-
         this.setState({ categories: cats}) 
     }
 }

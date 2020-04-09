@@ -12,153 +12,152 @@ function Calculator(props) {
     const [calculatingDonors, setCalculatingDonors] = useState(true)
 
     return (
-        <bs.Container fluid className='p-0 d-flex flex-column' style={{ backgroundColor: 'white', boxShadow: "inset 0px 5px 5px #555"}}>
-                        <Formik
-                            initialValues={{
-                                title: 'dummy title',
-                                goal: '100000',
-                                description: 'this is a dummy description',
-                                category_id: "3",
-                                has_beneficiary: "yes",
-                                is_charity: "yes",
-                            }}
-                            validateOnChange={false}
-                            validateOnBlur={false}
-                            validate={values => {
-                                const errors = {}
-                                let regex = /^[0-9]*$/
+        <bs.Container fluid className='p-0 d-flex flex-column' style={{ backgroundColor: 'white', boxShadow: "inset 0px 5px 5px #555" }}>
+            <Formik
+                initialValues={{
+                    title: 'dummy title',
+                    goal: '100000',
+                    description: 'this is a dummy description',
+                    category_id: "3",
+                    has_beneficiary: "yes",
+                    is_charity: "yes",
+                }}
+                validateOnChange={false}
+                validateOnBlur={false}
+                validate={values => {
+                    const errors = {}
+                    let regex = /^[0-9]*$/
 
-                                if (values.title === "") { errors.title = "Title is required" }
-                                if (values.goal === "") { errors.goal = "Goal is required" }
-                                if (!regex.test(values.goal) && values.goal !== "") { errors.goal = "Please enter a valid number" }
-                                if (values.description === "") { errors.description = "Description is required" }
-                                if (values.category_id === "") { errors.category_id = "Category is required" }
-                                if (values.has_beneficiary === "") { errors.has_beneficiary = 'Please select "Yes" or "No"'}
-                                setSubmitted(false)
-                                //console.log(errors)
-                                return errors
-                            }}
-                            onSubmit={async (values, actions) => {
-                                //console.log('submit', values)
-                                setCalculatingAmount(true)
-                                setCalculatingDonors(true)
+                    if (values.title === "") { errors.title = "Title is required" }
+                    if (values.goal === "") { errors.goal = "Goal is required" }
+                    if (!regex.test(values.goal) && values.goal !== "") { errors.goal = "Please enter a valid number" }
+                    if (values.description === "") { errors.description = "Description is required" }
+                    if (values.category_id === "") { errors.category_id = "Category is required" }
+                    if (values.has_beneficiary === "") { errors.has_beneficiary = 'Please select "Yes" or "No"' }
+                    setSubmitted(false)
+                    //console.log(errors)
+                    return errors
+                }}
+                onSubmit={async (values, actions) => {
+                    //console.log('submit', values)
+                    setCalculatingAmount(true)
+                    setCalculatingDonors(true)
 
-                                //API call for total amount
-                                let uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/51dd27bdbc5b484a966a6b9689c624f5/execute?api-version=2.0&details=true"
-                                let apiKey = "w2Gujfzpgcvj6I14BeuiHt28U6G3H+7LZpwrJrEXtVLA7yjylNs445iUGqg4KT1ziiaEYrSi7aHCkgx1A60gNQ=="
+                    //API call for total amount
+                    let uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/51dd27bdbc5b484a966a6b9689c624f5/execute?api-version=2.0&details=true"
+                    let apiKey = "w2Gujfzpgcvj6I14BeuiHt28U6G3H+7LZpwrJrEXtVLA7yjylNs445iUGqg4KT1ziiaEYrSi7aHCkgx1A60gNQ=="
 
-                                let data = 
-                                {
-                                    "Inputs": {
-                                      "input1": {
-                                        "ColumnNames": [
-                                          "current_amount",
-                                          "category_id",
-                                          "goal",
-                                          "title",
-                                          "description",
-                                          "has_beneficiary"
-                                        ],
-                                        "Values": [
-                                          [
-                                            "",
-                                            values.category_id,
-                                            values.goal,
-                                            values.title,
-                                            values.description,
-                                            values.has_beneficiary === "yes" ? "TRUE" : "FALSE",
-                                          ]
-                                        ]
-                                      }
-                                    },
-                                    "GlobalParameters": {}
-                                  }
+                    let data =
+                    {
+                        "Inputs": {
+                            "input1": {
+                                "ColumnNames": [
+                                    "current_amount",
+                                    "category_id",
+                                    "goal",
+                                    "title",
+                                    "description",
+                                    "has_beneficiary"
+                                ],
+                                "Values": [
+                                    [
+                                        "",
+                                        values.category_id,
+                                        values.goal,
+                                        values.title,
+                                        values.description,
+                                        values.has_beneficiary === "yes" ? "TRUE" : "FALSE",
+                                    ]
+                                ]
+                            }
+                        },
+                        "GlobalParameters": {}
+                    }
 
-                                let options = {
-                                    uri: uri,
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "Authorization": "Bearer " + apiKey,
-                                    },
-                                    body: JSON.stringify(data)
-                                }
+                    let options = {
+                        uri: uri,
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + apiKey,
+                        },
+                        body: JSON.stringify(data)
+                    }
 
-                                req(options, (err, res, body) => {
-                                    if (!err && res.statusCode === 200) {
-                                        //console.log("Amount API call results:", body)
-                                        setAmountResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][9]))
-                                        
-                                    } else {
-                                        //console.log("The request failed with status code: " + res.statusCode);
-                                    }
-                                    setCalculatingAmount(false)
-                                })
+                    req(options, (err, res, body) => {
+                        if (!err && res.statusCode === 200) {
+                            //console.log("Amount API call results:", body)
+                            setAmountResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][9]))
 
-                                //API call for # of donors
-                                uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/2d6bf571202848508ddeb9b1671609db/execute?api-version=2.0&details=true"
-                                apiKey = "FrfMtmzQsv28g+QvnJLwefQwvyx7B0pBy6j0sSGnAOOsETMZBv0EwF2hxLM/le6iXfDrJvIfZLQwI7WiePPnKw=="
+                        } else {
+                            //console.log("The request failed with status code: " + res.statusCode);
+                        }
+                        setCalculatingAmount(false)
+                    })
 
-                                data =
-                                {
-                                    "Inputs": {
-                                        "input1": {
-                                            "ColumnNames": [
-                                                "category_id",
-                                                "goal",
-                                                "donators",
-                                                "title",
-                                                "description",
-                                                "has_beneficiary",
-                                                "is_charity"
-                                            ],
-                                            "Values": [
-                                                [
-                                                    values.category_id,
-                                                    values.goal,
-                                                    "",
-                                                    values.title,
-                                                    values.description,
-                                                    values.has_beneficiary === "yes" ? "1" : "0",
-                                                    values.is_charity === "yes" ? "1" : "0",
-                                                ]
-                                            ]
-                                        }
-                                    },
-                                    "GlobalParameters": {}
-                                }
+                    //API call for # of donors
+                    uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/2d6bf571202848508ddeb9b1671609db/execute?api-version=2.0&details=true"
+                    apiKey = "FrfMtmzQsv28g+QvnJLwefQwvyx7B0pBy6j0sSGnAOOsETMZBv0EwF2hxLM/le6iXfDrJvIfZLQwI7WiePPnKw=="
 
-                                options = {
-                                    uri: uri,
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                        "Authorization": "Bearer " + apiKey,
-                                    },
-                                    body: JSON.stringify(data)
-                                }
+                    data =
+                    {
+                        "Inputs": {
+                            "input1": {
+                                "ColumnNames": [
+                                    "category_id",
+                                    "goal",
+                                    "donators",
+                                    "title",
+                                    "description",
+                                    "has_beneficiary",
+                                    "is_charity"
+                                ],
+                                "Values": [
+                                    [
+                                        values.category_id,
+                                        values.goal,
+                                        "",
+                                        values.title,
+                                        values.description,
+                                        values.has_beneficiary === "yes" ? "1" : "0",
+                                        values.is_charity === "yes" ? "1" : "0",
+                                    ]
+                                ]
+                            }
+                        },
+                        "GlobalParameters": {}
+                    }
 
-                                req(options, (err, res, body) => {
-                                    if (!err && res.statusCode === 200) {
-                                        //console.log("Donors API call results:", body)
-                                        setDonorsResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][10]))
-                                        
-                                    } else {
-                                        //console.log("The request failed with status code: " + res.statusCode);
-                                    }
-                                    setCalculatingDonors(false)
-                                });
+                    options = {
+                        uri: uri,
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + apiKey,
+                        },
+                        body: JSON.stringify(data)
+                    }
 
-                                setSubmitted(true)
-                            }}
-                        >{form => (
-                            <CalcForm form={form} submitted={submitted} amountResponse={amountResponse} donorsResponse={donorsResponse} calculatingAmount={calculatingAmount} calculatingDonors={calculatingDonors}/>
-                        )}</Formik>
+                    req(options, (err, res, body) => {
+                        if (!err && res.statusCode === 200) {
+                            //console.log("Donors API call results:", body)
+                            setDonorsResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][10]))
+
+                        } else {
+                            //console.log("The request failed with status code: " + res.statusCode);
+                        }
+                        setCalculatingDonors(false)
+                    });
+
+                    setSubmitted(true)
+                }}
+            >{form => (
+                <CalcForm form={form} submitted={submitted} amountResponse={amountResponse} donorsResponse={donorsResponse} calculatingAmount={calculatingAmount} calculatingDonors={calculatingDonors} />
+            )}</Formik>
         </bs.Container>
     )
 }
 export default Calculator
-
 
 const CalcForm = props => {
     const categories = {};
@@ -179,13 +178,11 @@ const CalcForm = props => {
                         <bs.Container className="mx-0">
                             <bs.Row>
                                 <bs.Col>
-                                    <h2>Success Calculator</h2><hr/>
+                                    <h2>Campaign Details</h2><hr/>
 
-                                    {/* Category_id (dropdown), 
-                                    goal, title, description(text), 
-                                    has_beneficiary (checkbox) */}
                                     <Input title="Title:" name="title" type="text" disabled={props.form.isSubmitting} />
                                     <Input title="Goal:" name="goal" type="text" disabled={props.form.isSubmitting} />
+                                    
                                     <strong>Description:</strong>
                                     <Field
                                         name="description"
@@ -193,32 +190,18 @@ const CalcForm = props => {
                                         rows="2"
                                         style={{ width: '100%', borderRadius: '5px', borderColor: 'lightgray' }}
                                     />
-                                    <div className="text-danger"><ErrorMessage name="description"/></div>
-                                    <br/>
+                                    <div className="text-danger"><ErrorMessage name="description"/></div><br/>
+                                    
                                     <Dropdown name='category_id' value="Category:" />
                                     <div className="text-danger"><ErrorMessage name="category_id"/></div><br/>
+
                                     <strong>Does this campaign have a beneficiary?</strong><br/>
-                                    {/* <Checkbox name='has_beneficiary' value="Yes" />
-                                    <Checkbox name='has_beneficiary' value="No" /> */}
                                     <Radio name='has_beneficiary' value='has_beneficiary'/><br/>
+                                    <div className="text-danger"><ErrorMessage name="has_beneficiary"/></div>
+
                                     <strong>Is this campaign for a charity?</strong><br/>
                                     <Radio name='is_charity' value='is_charity'/>
-                                    <div className="text-danger"><ErrorMessage name="has_beneficiary"/></div>
-                                    
-
-                                    {/* <bs.Button type="submit" className="btn btn-primary mt-4" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>
-                                        {props.form.isSubmitting &&
-                                            <bs.Spinner
-                                                as="span"
-                                                animation="border"
-                                                size="sm"
-                                                role="status"
-                                                aria-hidden="true"
-                                                className="mr-2"
-                                            />
-                                        }
-                                        Submit
-                                    </bs.Button> */}
+                                    <div className="text-danger"><ErrorMessage name="is_charity"/></div>
                                 </bs.Col>
                             </bs.Row>
                         </bs.Container>
@@ -250,7 +233,6 @@ const CalcForm = props => {
                             }
                             {props.amountResponse && !props.calculatingAmount &&
                                 <h3>${props.amountResponse}</h3>
-                                // "test"
                             }
                             <br /><br/>
                             <h4>Number of Donors:</h4>
@@ -266,7 +248,6 @@ const CalcForm = props => {
                             }
                             {props.donorsResponse && !props.calculatingDonors &&
                                 <h3>{props.donorsResponse}</h3>
-                                // "test"
                             }
                             <br /><br/>
                             <h4>Amount per Donor:</h4>
@@ -292,7 +273,6 @@ const CalcForm = props => {
     )
 }
 
-
 const Input = (props) => (
     <Field name={props.name}>{rProps => (
         <bs.Form.Group>
@@ -311,35 +291,6 @@ const Input = (props) => (
         </bs.Form.Group>
     )}</Field>
 )
-
-// function Checkbox(props) {
-//     return (
-//         <Field name={props.name}>
-//             {({ field, form }) => (
-//                 <label className="mb-0">
-//                     <input
-//                         className="mx-2"
-//                         type="checkbox"
-//                         {...props}
-//                         checked={field.value.includes(props.value)}
-//                         onChange={() => {
-//                             if (field.value.includes(props.value)) {
-//                                 const nextValue = field.value.filter(
-//                                     value => value !== props.value
-//                                 );
-//                                 form.setFieldValue(props.name, nextValue);
-//                             } else {
-//                                 const nextValue = field.value.concat(props.value);
-//                                 form.setFieldValue(props.name, nextValue);
-//                             }
-//                         }}
-//                     />
-//                     {props.value}
-//                 </label>
-//             )}
-//         </Field>
-//     );
-// }
 
 function Radio(props) {
     return (
