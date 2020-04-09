@@ -16,7 +16,7 @@ function Header(props) {
                     <Link to='/calculator' className='nav-link mt-2'>Success Calculator</Link>
                 </bs.Nav>
                 <bs.Nav>
-                    <bs.NavDropdown title="Welcome, Jacob" id="basic-nav-dropdown" alignRight>
+                    <bs.NavDropdown title="Welcome" id="basic-nav-dropdown" alignRight>
                         <bs.NavDropdown.Item href="#action/3.1">My Account</bs.NavDropdown.Item>
                         <bs.NavDropdown.Item href="#action/3.3">Preferences</bs.NavDropdown.Item>
                         <bs.NavDropdown.Item href="#action/3.2">Logout</bs.NavDropdown.Item>

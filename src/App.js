@@ -8,7 +8,7 @@ import Header from './header'
 import Left from './Left'
 import Footer from './Footer'
 import Search from './Search'
-import Campaign from './CampaignDetail'
+import CampaignDetail from './CampaignDetail'
 import Calculator from './calculator'
 import Login from './login'
 import Signup from './signup'
@@ -41,12 +41,12 @@ function App(props) {
               <bs.Col md='2' style={{ backgroundColor: '#748591', boxShadow: "inset -2px 5px 5px #555" }}>
                 <Left />
               </bs.Col>
-              <bs.Col md='10' style={{ backgroundColor: 'white' }}>
+              <bs.Col md='10' style={{ backgroundColor: 'white', boxShadow: "inset 0px 5px 5px #555"  }}>
                 <Search />
               </bs.Col>
             </Route>
             <Route path='/campaign'>
-              <Campaign />
+              <CampaignDetail style={{ backgroundColor: 'white', boxShadow: "inset 0px 5px 5px #555"}}/>
             </Route>
             <Route path='/calculator'>
               <Calculator />

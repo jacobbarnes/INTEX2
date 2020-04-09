@@ -6,16 +6,21 @@ let req = require("request");
 
 function Calculator(props) {
     const [submitted, setSubmitted] = useState(false);
+    const [amountResponse, setAmountResponse] = useState()
+    const [donorsResponse, setDonorsResponse] = useState()
+    const [calculatingAmount, setCalculatingAmount] = useState(true)
+    const [calculatingDonors, setCalculatingDonors] = useState(true)
 
     return (
-        <bs.Container fluid className='p-0 d-flex flex-column'>
+        <bs.Container fluid className='p-0 d-flex flex-column' style={{ backgroundColor: 'white', boxShadow: "inset 0px 5px 5px #555"}}>
                         <Formik
                             initialValues={{
-                                title: '',
-                                goal: '',
-                                description: '',
-                                category_id: "",
-                                has_beneficiary: "",
+                                title: 'dummy title',
+                                goal: '100000',
+                                description: 'this is a dummy description',
+                                category_id: "3",
+                                has_beneficiary: "yes",
+                                is_charity: "yes",
                             }}
                             validateOnChange={false}
                             validateOnBlur={false}
@@ -35,9 +40,12 @@ function Calculator(props) {
                             }}
                             onSubmit={async (values, actions) => {
                                 console.log('submit', values)
+                                setCalculatingAmount(true)
+                                setCalculatingDonors(true)
 
-                                const uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/51dd27bdbc5b484a966a6b9689c624f5/execute?api-version=2.0&details=true"
-                                const apiKey = "w2Gujfzpgcvj6I14BeuiHt28U6G3H+7LZpwrJrEXtVLA7yjylNs445iUGqg4KT1ziiaEYrSi7aHCkgx1A60gNQ=="
+                                //API call for total amount
+                                let uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/51dd27bdbc5b484a966a6b9689c624f5/execute?api-version=2.0&details=true"
+                                let apiKey = "w2Gujfzpgcvj6I14BeuiHt28U6G3H+7LZpwrJrEXtVLA7yjylNs445iUGqg4KT1ziiaEYrSi7aHCkgx1A60gNQ=="
 
                                 let data = 
                                 {
@@ -66,7 +74,7 @@ function Calculator(props) {
                                     "GlobalParameters": {}
                                   }
 
-                                const options = {
+                                let options = {
                                     uri: uri,
                                     method: "POST",
                                     headers: {
@@ -78,16 +86,73 @@ function Calculator(props) {
 
                                 req(options, (err, res, body) => {
                                     if (!err && res.statusCode === 200) {
-                                        console.log("response?", body);
+                                        console.log("Amount API call results:", body)
+                                        setAmountResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][9]))
+                                        
                                     } else {
                                         console.log("The request failed with status code: " + res.statusCode);
                                     }
+                                    setCalculatingAmount(false)
+                                })
+
+                                //API call for # of donors
+                                uri = "https://cors-anywhere.herokuapp.com/https://ussouthcentral.services.azureml.net/workspaces/4067c46e530d4828bb0d907ef0ab9825/services/2d6bf571202848508ddeb9b1671609db/execute?api-version=2.0&details=true"
+                                apiKey = "FrfMtmzQsv28g+QvnJLwefQwvyx7B0pBy6j0sSGnAOOsETMZBv0EwF2hxLM/le6iXfDrJvIfZLQwI7WiePPnKw=="
+
+                                data =
+                                {
+                                    "Inputs": {
+                                        "input1": {
+                                            "ColumnNames": [
+                                                "category_id",
+                                                "goal",
+                                                "donators",
+                                                "title",
+                                                "description",
+                                                "has_beneficiary",
+                                                "is_charity"
+                                            ],
+                                            "Values": [
+                                                [
+                                                    values.category_id,
+                                                    values.goal,
+                                                    "",
+                                                    values.title,
+                                                    values.description,
+                                                    values.has_beneficiary === "yes" ? "1" : "0",
+                                                    values.is_charity === "yes" ? "1" : "0",
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "GlobalParameters": {}
+                                }
+
+                                options = {
+                                    uri: uri,
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Authorization": "Bearer " + apiKey,
+                                    },
+                                    body: JSON.stringify(data)
+                                }
+
+                                req(options, (err, res, body) => {
+                                    if (!err && res.statusCode === 200) {
+                                        console.log("Donors API call results:", body)
+                                        setDonorsResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][10]))
+                                        
+                                    } else {
+                                        console.log("The request failed with status code: " + res.statusCode);
+                                    }
+                                    setCalculatingDonors(false)
                                 });
 
                                 setSubmitted(true)
                             }}
                         >{form => (
-                            <CalcForm form={form} submitted={submitted} setSubmitted={setSubmitted}/>
+                            <CalcForm form={form} submitted={submitted} amountResponse={amountResponse} donorsResponse={donorsResponse} calculatingAmount={calculatingAmount} calculatingDonors={calculatingDonors}/>
                         )}</Formik>
         </bs.Container>
     )
@@ -98,6 +163,7 @@ export default Calculator
 const CalcForm = props => {
     const categories = {};
 
+    console.log("From CalcForm",props)
     // eslint-disable-next-line
     let total = 0
     for (let p of campaigns) {
@@ -131,10 +197,12 @@ const CalcForm = props => {
                                     <br/>
                                     <Dropdown name='category_id' value="Category:" />
                                     <div className="text-danger"><ErrorMessage name="category_id"/></div><br/>
-                                    <strong>Has Beneficiary</strong><br/>
+                                    <strong>Does this campaign have a beneficiary?</strong><br/>
                                     {/* <Checkbox name='has_beneficiary' value="Yes" />
                                     <Checkbox name='has_beneficiary' value="No" /> */}
-                                    <Radio name='has_beneficiary' value='Has Beneficiary'></Radio>
+                                    <Radio name='has_beneficiary' value='has_beneficiary'/><br/>
+                                    <strong>Is this campaign for a charity?</strong><br/>
+                                    <Radio name='is_charity' value='is_charity'/>
                                     <div className="text-danger"><ErrorMessage name="has_beneficiary"/></div>
                                     
 
@@ -161,18 +229,61 @@ const CalcForm = props => {
                 <i onClick={() => props.form.submitForm()} style={{ cursor: "pointer", marginTop: '150px',}} className="fas fa-arrow-alt-circle-right fa-7x text-primary"></i>
             </bs.Col>
             <bs.Col md='4'>
-                <bs.Card className="p-5 shadow bg-white rounded" style={{height:'100%'}}>
-                    <h2>Results</h2><hr/>
+                <bs.Card className="p-5 shadow bg-white rounded" style={{ height: '100%' }}>
+                    <h2>Prediction</h2><hr />
                     {props.submitted === false &&
-                        "press the button to submit"
+                        "Press the arrow button to see a prediction of how successful your campaign will be!"
                     }
 
                     {props.submitted &&
                         <>
-                            <h4>Number of Donators:</h4>
-                            <h6>42</h6><br/>
-                            <h4>Amount per Donation:</h4>
-                            <h6>$42</h6>
+                            <h4>Total Donation Amount:</h4>
+                            {props.calculatingAmount &&
+                                <bs.Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="mr-2"
+                                />
+                            }
+                            {props.amountResponse && !props.calculatingAmount &&
+                                <h6>${props.amountResponse}</h6>
+                                // "test"
+                            }
+                            <br />
+                            <h4>Number of Donors:</h4>
+                            {props.calculatingDonors &&
+                                <bs.Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="mr-2"
+                                />
+                            }
+                            {props.donorsResponse && !props.calculatingDonors &&
+                                <h6>{props.donorsResponse}</h6>
+                                // "test"
+                            }
+                            <br />
+                            <h4>Amount per Donor:</h4>
+                            {(props.calculatingDonors || props.calculatingAmount) &&
+                                <bs.Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="mr-2"
+                                />
+                            }
+                            {props.donorsResponse && !props.calculatingDonors && !props.calculatingAmount &&
+                                <h6>${(props.amountResponse / props.donorsResponse).toFixed(2)}</h6>
+                                // "test"
+                            }
                         </>
                     }
                 </bs.Card>
