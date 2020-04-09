@@ -35,11 +35,11 @@ function Calculator(props) {
                                 if (values.category_id === "") { errors.category_id = "Category is required" }
                                 if (values.has_beneficiary === "") { errors.has_beneficiary = 'Please select "Yes" or "No"'}
                                 setSubmitted(false)
-                                console.log(errors)
+                                //console.log(errors)
                                 return errors
                             }}
                             onSubmit={async (values, actions) => {
-                                console.log('submit', values)
+                                //console.log('submit', values)
                                 setCalculatingAmount(true)
                                 setCalculatingDonors(true)
 
@@ -86,11 +86,11 @@ function Calculator(props) {
 
                                 req(options, (err, res, body) => {
                                     if (!err && res.statusCode === 200) {
-                                        console.log("Amount API call results:", body)
+                                        //console.log("Amount API call results:", body)
                                         setAmountResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][9]))
                                         
                                     } else {
-                                        console.log("The request failed with status code: " + res.statusCode);
+                                        //console.log("The request failed with status code: " + res.statusCode);
                                     }
                                     setCalculatingAmount(false)
                                 })
@@ -140,11 +140,11 @@ function Calculator(props) {
 
                                 req(options, (err, res, body) => {
                                     if (!err && res.statusCode === 200) {
-                                        console.log("Donors API call results:", body)
+                                        //console.log("Donors API call results:", body)
                                         setDonorsResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][10]))
                                         
                                     } else {
-                                        console.log("The request failed with status code: " + res.statusCode);
+                                        //console.log("The request failed with status code: " + res.statusCode);
                                     }
                                     setCalculatingDonors(false)
                                 });
@@ -163,7 +163,7 @@ export default Calculator
 const CalcForm = props => {
     const categories = {};
 
-    console.log("From CalcForm",props)
+    //console.log("From CalcForm",props)
     // eslint-disable-next-line
     let total = 0
     for (let p of campaigns) {
@@ -229,7 +229,7 @@ const CalcForm = props => {
                 <i onClick={() => props.form.submitForm()} style={{ cursor: "pointer", marginTop: '150px',}} className="fas fa-arrow-alt-circle-right fa-7x text-primary"></i>
             </bs.Col>
             <bs.Col md='4'>
-                <bs.Card className="p-5 shadow bg-white rounded" style={{ height: '100%' }}>
+                <bs.Card className="p-5 shadow bg-white rounded" style={{ height: '100%', textAlign:'center' }}>
                     <h2>Prediction</h2><hr />
                     {props.submitted === false &&
                         "Press the arrow button to see a prediction of how successful your campaign will be!"
@@ -242,46 +242,46 @@ const CalcForm = props => {
                                 <bs.Spinner
                                     as="span"
                                     animation="border"
-                                    size="sm"
                                     role="status"
                                     aria-hidden="true"
                                     className="mr-2"
+                                    style={{marginLeft:'calc(50% - 12px)', display:'block'}}
                                 />
                             }
                             {props.amountResponse && !props.calculatingAmount &&
-                                <h6>${props.amountResponse}</h6>
+                                <h3>${props.amountResponse}</h3>
                                 // "test"
                             }
-                            <br />
+                            <br /><br/>
                             <h4>Number of Donors:</h4>
                             {props.calculatingDonors &&
                                 <bs.Spinner
                                     as="span"
                                     animation="border"
-                                    size="sm"
                                     role="status"
                                     aria-hidden="true"
                                     className="mr-2"
+                                    style={{marginLeft:'calc(50% - 12px)', display:'block'}}
                                 />
                             }
                             {props.donorsResponse && !props.calculatingDonors &&
-                                <h6>{props.donorsResponse}</h6>
+                                <h3>{props.donorsResponse}</h3>
                                 // "test"
                             }
-                            <br />
+                            <br /><br/>
                             <h4>Amount per Donor:</h4>
                             {(props.calculatingDonors || props.calculatingAmount) &&
                                 <bs.Spinner
                                     as="span"
                                     animation="border"
-                                    size="sm"
                                     role="status"
                                     aria-hidden="true"
                                     className="mr-2"
+                                    style={{marginLeft:'calc(50% - 12px)', display:'block'}}
                                 />
                             }
                             {props.donorsResponse && !props.calculatingDonors && !props.calculatingAmount &&
-                                <h6>${(props.amountResponse / props.donorsResponse).toFixed(2)}</h6>
+                                <h3>${(props.amountResponse / props.donorsResponse).toFixed(2)}</h3>
                                 // "test"
                             }
                         </>

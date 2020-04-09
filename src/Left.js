@@ -29,7 +29,7 @@ function Left(props) {
                 return errors
             }}
             onSubmit={async (values, actions) => {
-                console.log('submit', values)
+                // console.log('submit', values)
 
                 context.filter(values)
             }}
@@ -58,7 +58,7 @@ const FilterForm = props => {
                     <bs.Col>
                         <br/>
                         <hr/>
-                        <h4 className="p-3" style={{boxShadow: "1px 1px 6px #555"}}><b>Show Results for:</b></h4>
+                        <h4 className="p-3" style={{boxShadow: "1px 1px 6px #555"}}><b>Filter Results By:</b></h4>
                         <hr/>
                         <h5 className="border p-2" ><strong>Title</strong></h5>
                         <Input  name="title" type="text" disabled={props.form.isSubmitting} />
@@ -86,7 +86,7 @@ const FilterForm = props => {
                         </bs.Container>
                         <br/>
                         <hr/>
-                        <a href="/#" onClick={() => { window.location.reload() }} style={{ textAlign: "center", color: "#2b2b2b"}}>
+                        <a href="/search" style={{ textAlign: "center", color: "#2b2b2b"}}>
                             <div className="my-3"  style={{boxShadow: "inset 3px 3px 4px #adb6bd", border: "#adb6bd 1px solid", marginLeft: "20%", marginRight: "20%" }}><b>Clear Filters</b></div>
                         </a>
                         <bs.Button type="submit" className="btn btn-primary btn-block mb-3 my-5" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>
@@ -147,7 +147,7 @@ function Checkbox(props) {
         "Sports Teams & Clubs":16,
         "Education & Learning":17,
         "Dreams Hopes & Wishes":20,
-        "unknown":21,
+        "Unknown":21,
     }
 
     return (
@@ -160,8 +160,8 @@ function Checkbox(props) {
                         {...props}
                         checked={field.value.includes(categoryIDs[props.value])}
                         onChange={() => {
-                            console.log(props.value)
-                            console.log(categoryIDs[props.value])
+                            // console.log(props.value)
+                            // console.log(categoryIDs[props.value])
                             if (field.value.includes(categoryIDs[props.value])) {
                                 const nextValue = field.value.filter(
                                     value => value !== categoryIDs[props.value]

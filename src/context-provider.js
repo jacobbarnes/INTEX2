@@ -23,9 +23,9 @@ export default class AppProvider extends React.Component {
 
     filter = (values) => {
         const campaignIDs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,20,]
-        // console.log("from filter", values)
+        // //console.log("from filter", values)
         let filteredCampaigns = campaigns
-        // console.log(filteredCampaigns)
+        // //console.log(filteredCampaigns)
         
         //filter titles
         if (values.title !== "") {
@@ -41,7 +41,7 @@ export default class AppProvider extends React.Component {
             filteredCampaigns = filteredCampaigns.filter(campaign => parseInt(campaign.goal) <= parseInt(values.max))
         }
 
-        // console.log(values.categories)
+        // //console.log(values.categories)
         //filter categories
         if (values.categories.length > 0){
             if (values.categories.indexOf(21) !== -1){
@@ -58,7 +58,7 @@ export default class AppProvider extends React.Component {
             else{
                 filteredCampaigns = filteredCampaigns.filter(campaign => values.categories.indexOf(parseInt(campaign.category_id)) !== -1)
             }
-            console.log(filteredCampaigns)
+            //console.log(filteredCampaigns)
         }
 
         this.setState({
@@ -71,7 +71,7 @@ export default class AppProvider extends React.Component {
         const wrappedElement = document.getElementById('searchContainer');
 
         if (wrappedElement && this.isBottom(wrappedElement)) {
-            console.log('Bottom reached')
+            //console.log('Bottom reached')
             this.loadMore()
         }
     };
