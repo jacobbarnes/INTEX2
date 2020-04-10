@@ -8,7 +8,7 @@ import CampaignCard from './CampaignCard'
 function Search(props) {
     const context = React.useContext(AppContext)
 
-    if (context.campaigns.length === 0 && context.filtered === false) {
+    if (!context.campaigns) {
         return (
             <div style={{ textAlign: 'center' }}>
                 <bs.Spinner
@@ -24,7 +24,7 @@ function Search(props) {
         )
     }
     
-    if (context.campaigns.length === 0 && context.filtered === true){
+    if (context.filteredCampaigns && context.filteredCampaigns.length === 0){
         return (
             <div style={{textAlign:"center"}}>
                 <div className="mt-5">The search did not return any results</div>
@@ -36,7 +36,12 @@ function Search(props) {
         <>
         <bs.Container id='searchContainer'>
             <bs.Row>
-                {context.campaigns.slice(0,context.numItems).map((object,ind) => (
+                {context.filteredCampaigns && context.filteredCampaigns.slice(0,context.numItems).map((object,ind) => (
+                    <bs.Col md='4' key={ind}>
+                        <CampaignCard campaign={object}/>
+                    </bs.Col>
+                ))}
+                {!context.filteredCampaigns && context.campaigns.slice(0,context.numItems).map((object,ind) => (
                     <bs.Col md='4' key={ind}>
                         <CampaignCard campaign={object}/>
                     </bs.Col>
