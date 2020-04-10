@@ -74,6 +74,9 @@ function Detail(props) {
         if (fraudLikelihood === "High") {
             score = 0
         }
+        else if (amountRaised > .9) {
+            score = 9
+        }
         else {
             score = (amountRaised > .67 ? 3 : amountRaised > .33 ? 2 : 1) + matrix.popularity[popularity] + matrix.fraud[fraudLikelihood]
         }
