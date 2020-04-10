@@ -5,13 +5,13 @@ import * as bs from 'react-bootstrap'
 import { Formik, Form, Field} from 'formik'
 import AppContext from './context';
 import axios from 'axios';
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 
 export default function Login() {
     let context = React.useContext(AppContext)
-
+    let history = useHistory();
     return(
         <Col md='4' className="position-absolute "
         style={{
@@ -20,28 +20,25 @@ export default function Login() {
             transform: "translate(-50%, -50%)"
         }}> 
             <Formik
-                initialValues={{
-                    email: "y@gmail",
-                    password: 'aaa',
-                }}
+            initialValues={{
+                email: "byu@gmail.com",
+                password: 'aaa'
+            }}
                 validateOnChange={false}
-                validateOnBlur={true}
+                validateOnBlur={false}
                 validate={values => {
                     const errors = {}
                     if (!values.email) {
-                        errors.name = 'Required';
+                        errors.email = 'Required';
                     }
                     if (values.email.length < 3 ) {
-                        errors.name = 'Please enter your email';
+                        errors.email = 'Please enter your email';
                     }
-                    // if (['admin', 'null'].includes(values.name)) {
-                    //     errors.name = 'Nice try';
-                    // }
                     if (!values.password) {
-                        errors.address1 = 'Required';
+                        errors.password = 'Required';
                     }
                     if (values.password.length > 23 ) {
-                        errors.name = 'limit of 23 characters, nice try';
+                        errors.password = 'limit of 23 characters, nice try';
                     }
                     console.log('validating', values)
                     return errors
@@ -50,15 +47,23 @@ export default function Login() {
                     document.getElementById("loading").style.display = "inline-block"
                     document.getElementById("postForm").disabled = true;
                     console.log("made it to the on submit")
-                    // console.log('values:', values)
-                    // console.log('actions:', actions)
                     var respLogin
                     try {
                         respLogin = await axios.post('https://intextwo.herokuapp.com/api/login/', {
                             "email" : values["email"],
                             "password" : values["password"],}
                         )
-                        console.log("Login", respLogin)
+                        if (respLogin.data === "Invalid Credentials") {
+                            document.getElementById("invalid").style.display = "inline-block"
+                        }
+                        else if(values["email"].includes("admin")) {
+                            context.addUser(100)
+                            history.push("/")
+                        }
+                        else {
+                            context.addUser(200)
+                            history.push("/")
+                        }
                     }catch(err){
                         window.alert(err)
                     }
@@ -77,41 +82,29 @@ const LoginForm = props => (
         <div className="container">
             <div className="row">
             <div className="col">
-            <Card className="light-bg p-5" 
+            <Card className="light-bg p-5 bg-accent text-center" 
                     style = {{
                         border: "#336482 solid 3px",
                         width: "100%"
                     }}>
             <Link to={"/"}><i className="fas fa-times-circle position-absolute" style={{right:"5px", top: "5px", color: "black"}}></i></Link>
-            <Card.Body className="bg-accent text-center">
                 <i className="fas fa-user-circle text-primary" style={{ fontSize: "5rem", padding: "10px"}}></i>
                 <Card.Title className="m2 text-center"><b>Login</b></Card.Title>
-                <Form className="d-flex justify-content-center">
-                <Card.Text>
-                    {/* <div className="input-group mb-3">
-                            <span style={{height: "40px"}}className="input-group-text"><i className="fas fa-envelope text-dark"></i></span> */}
-                        <Input style={{height: "40px"}} type="text" name="email" className=" input_user"  placeholder="email"/>
-                    {/* </div>
-                    <br/>
-                    <div className="input-group mb-2">
-                        <div className="input-group-append">
-                            <span  style={{height: "40px"}} className="input-group-text"><i className="fas fa-key text-dark"></i></span>
-                        </div> */}
-                        <Input  style={{height: "40px"}} type="password" name="password" className="input_pass" placeholder="password"/>
-                    {/* </div> */}
+                <p id="invalid" style={{display:"none", color: "red"}}>Invalid Credentials</p>
+                <Card.Body>
+                    <Input style={{height: "40px"}} type="text" name="email" className=" input_user"  placeholder="email"/>
+                    <Input  style={{height: "40px"}} type="password" name="password" className="input_pass" placeholder="password"/>
                     <Button type="submit" id="postForm" disabled={Formik.isSubmitting} className="btn btn-thirdry btn-block btn-lg p-1 my-3"> <Spinner as="span" animation="border" size="sm" role="status" area-hidden="true" id="loading" style={{display:"none"}}/> Login</Button> 
-                </Card.Text>
-                </Form>
+                </Card.Body>
                 <hr/>
-                <Card.Text>
+                <Card.Body>
                     <div className="mt-40">
                         <div className="d-flex justify-content-center links py-2">
                             <b>Don't have an account?</b>
                         </div>
                     </div>
                     <Link to={"/Signup"} className="btn btn-dark" style={{ width: "40%"}}>Sign Up</Link>
-                </Card.Text>
-            </Card.Body>
+                </Card.Body>
             </Card>
             </div> 
             </div>

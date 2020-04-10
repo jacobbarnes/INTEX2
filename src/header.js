@@ -2,8 +2,10 @@ import React from 'react'
 import * as bs from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import SiteIcon from './logo.jpg'
+import AppContext from './context';
 
 function Header(props) {
+    let context = React.useContext(AppContext)
     return (
         <bs.Navbar bg="light" expand="lg"> {/* style={{background: "#333333"}} */}
             <bs.Navbar.Brand href="/"><strong>GoFundMe Analytics</strong></bs.Navbar.Brand>
@@ -12,16 +14,12 @@ function Header(props) {
                 <bs.Nav className="mr-auto">
                     <bs.Image src={SiteIcon} style={{height:'3rem', width: '3rem'}} roundedCircle />
                     <Link to='/' className='nav-link mt-2'>Home</Link>
-                    <Link to='/search' className='nav-link mt-2'>Search Campaigns</Link>
-                    <Link to='/calculator' className='nav-link mt-2'>Success Calculator</Link>
+                    {context.currentAdmin && <Link to='/search' className='nav-link mt-2'>Search Campaigns</Link>}
+                    {context.currentUser && <Link to='/calculator' className='nav-link mt-2'>Success Calculator</Link>}
                 </bs.Nav>
                 <bs.Nav>
-                    <bs.NavDropdown title="Welcome" id="basic-nav-dropdown" alignRight>
-                        <bs.NavDropdown.Item href="#action/3.1">My Account</bs.NavDropdown.Item>
-                        <bs.NavDropdown.Item href="#action/3.3">Preferences</bs.NavDropdown.Item>
-                        <bs.NavDropdown.Item href="#action/3.2">Logout</bs.NavDropdown.Item>
-                    </bs.NavDropdown>
-                    <Link to={"/Login"} className="navbar btn btn-dark">Log in</Link>
+                    {context.currentUser==false && <Link to={"/Login"} className="navbar btn btn-dark btn-block">Log in</Link>}
+                    {context.currentUser && <bs.Button onClick={() => context.logout()} className="navbar btn btn-dark btn-block">Log out</bs.Button> }
                 </bs.Nav>
             </bs.Navbar.Collapse>
         </bs.Navbar>

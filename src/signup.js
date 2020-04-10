@@ -5,10 +5,12 @@ import * as bs from 'react-bootstrap'
 import { Formik, Form, Field} from 'formik'
 import AppContext from './context';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 
 export default function Signup() {
     let context = React.useContext(AppContext)
+    let history = useHistory();
     return(
         <Col md='4' className="position-absolute "
         style={{
@@ -18,7 +20,7 @@ export default function Signup() {
         }}> 
             <Formik
                 initialValues={{
-                    email: "y@gmail",
+                    email: "byu@gmail.com",
                     password: 'aaa',
                     password_verify: 'aaa'
                 }}
@@ -50,7 +52,7 @@ export default function Signup() {
                     if (values.password.length > 23 ) {
                         errors.password = 'limit of 23 characters';
                     }
-                    if(values.password != values.password_verify) {
+                    if(values.password !== values.password_verify) {
                         errors.password_verify = 'passwords must match';
                     }
                     console.log('validating', values)
@@ -60,15 +62,19 @@ export default function Signup() {
                     document.getElementById("loading").style.display = "inline-block"
                     document.getElementById("postForm").disabled = true;
                     console.log("made it to the on submit")
-                    // console.log('values:', values)
-                    // console.log('actions:', actions)
                     var respLogin
                     try {
                         respLogin = await axios.post('https://intextwo.herokuapp.com/api/user/', {
                             "email" : values["email"],
                             "password" : values["password"],}
                         )
-                        console.log("Create User", respLogin)
+                        if (respLogin.data === 200) {
+                            context.addUser(200)
+                            history.push("/")
+                        }
+                        else {
+                            document.getElementById("invalid").style.display = "inline-block"
+                        }
                     }catch(err){
                         window.alert(err)
                     }
@@ -90,7 +96,7 @@ const AccoutForm = props => (
                     width: "100%"
                 }}>
             <Link to={"/"}><i className="fas fa-times-circle position-absolute" style={{right:"5px", top: "5px", color: "black"}}></i></Link>
-            <Card.Body
+            <Card.Body 
             className="bg-accent text-center">
                 <i className="fas fa-user-circle text-primary"
                     style={{
@@ -98,30 +104,22 @@ const AccoutForm = props => (
                         padding: "10px",
                     }}></i>
                 <Card.Title className="m2 text-center"><b>Make An Account </b></Card.Title>
-                <Form className="d-flex justify-content-center">
-                <Card.Text>
-                    <div className="input-group mb-3">
+                <p id="invalid" style={{display:"none", color: "red"}}>Email is already in use</p>
+                <Card.Body>
                         <Input type="email" name="email" className="form-control input_pass"  placeholder="email"/>
-                    </div>
-                    <div className="input-group mb-3">
                         <Input type="password" name="password" className="form-control input_pass"  placeholder="password"/>
-                    </div>
-                    <div className="input-group mb-2">
                         <Input type="password" name="password_verify" className="form-control input_pass" placeholder="Confirm password"/>
-                    </div>
                 <Button type="submit" id="postForm" disabled={Formik.isSubmitting} className="btn btn-thirdry btn-block btn-lg p-1 my-3"> <Spinner as="span" animation="border" size="sm" role="status" area-hidden="true" id="loading" style={{display:"none"}}/>Sign up</Button>
-                </Card.Text>
-                </Form>
                 <hr/>
-                <Card.Text>
+                </Card.Body>
+                <Card.Body>
                     <div className="mt-4">
                         <div className="d-flex justify-content-center links py-2">
                             <b> Already have an account? </b>
                         </div>
                     </div>
                     <Link to={"/Login"} className="btn btn-dark" style={{ width: "40%"}}>Login</Link>
-
-                </Card.Text>
+                </Card.Body>
             </Card.Body>
             </Card>
     </Form>
@@ -145,45 +143,3 @@ const Input = (props) => (
         </bs.Form.Group>
     )}</Field>
 )
-
-
-
-
-
-
-{/* <Card className="light-bg p-5" 
-style = {{
-    border: "#336482 solid 3px",
-    width: "100%"
-}}>
-<Link to={"/"}><i className="fas fa-times-circle position-absolute" style={{right:"5px", top: "5px", color: "black"}}></i></Link>
-<Card.Body className="bg-accent text-center">
-<i className="fas fa-user-circle text-primary" style={{ fontSize: "5rem", padding: "10px"}}></i>
-<Card.Title className="m2 text-center"><b>Sign In</b></Card.Title>
-<Form className="d-flex justify-content-center">
-<Card.Text>
-{/* <div className="input-group mb-3">
-        <span style={{height: "40px"}}className="input-group-text"><i className="fas fa-envelope text-dark"></i></span>
-    <Input style={{height: "40px"}} type="text" name="email" className=" input_user"  placeholder="email"/>
-{/* </div>
-<br/>
-<div className="input-group mb-2">
-    <div className="input-group-append">
-        <span  style={{height: "40px"}} className="input-group-text"><i className="fas fa-key text-dark"></i></span>
-    </div> 
-    <Input  style={{height: "40px"}} type="password" name="password" className="input_pass" placeholder="password"/>
-{/* </div> 
-<Button type="submit" id="postForm" disabled={Formik.isSubmitting} className="btn btn-thirdry btn-block btn-lg p-1 my-3"> <Spinner as="span" animation="border" size="sm" role="status" area-hidden="true" id="loading" style={{display:"none"}}/> Login</Button> 
-</Card.Text>
-</Form>
-<hr/>
-<Card.Text>
-<div className="mt-40">
-    <div className="d-flex justify-content-center links py-2">
-        <b>Don't have an account?</b>
-    </div>
-</div>
-<Link to={"/Signup"} className="btn btn-dark" style={{ width: "40%"}}>Sign Up</Link>
-</Card.Text>
-</Card.Body>
-</Card> */}

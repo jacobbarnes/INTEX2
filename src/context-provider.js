@@ -3,6 +3,7 @@ import axios from 'axios'
 import AppContext from './context'
 import App from './App'
 import campaigns from './campaigns'
+import {produce} from "immer"
 
 export default class AppProvider extends React.Component {
     constructor(props) {
@@ -10,12 +11,34 @@ export default class AppProvider extends React.Component {
         this.actions = {
             loadMore: this.loadMore,
             filter: this.filter,
+            addUser: this.addUser,
+            logout: this.logout
         }
         this.state = {
             campaigns:[],
             numItems:15,
             filtered:false,
+            currentUser: false,
+            currentAdmin: false,
         }
+    }
+    addUser = (status) => {
+        this.setState(state =>produce(state, draftState => {
+            if (status === 100) {
+                draftState.currentUser = true
+                draftState.currentAdmin = true
+                console.log("admin has logged in")
+            }
+            else if (status === 200) {
+                draftState.currentUser = true
+            }
+        }))
+    }
+    logout = () => {
+        this.setState(state =>produce(state, draftState => {
+            draftState.currentAdmin = false
+            draftState.currentUser = false
+        }))
     }
 
     loadMore = () => {
