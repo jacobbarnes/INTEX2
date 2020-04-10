@@ -53,16 +53,20 @@ export default function Login() {
                             "email" : values["email"],
                             "password" : values["password"],}
                         )
+                        console.log("login:", respLogin)
                         if (respLogin.data === "Invalid Credentials") {
                             document.getElementById("invalid").style.display = "inline-block"
                         }
-                        else if(values["email"].includes("admin")) {
+                        else if(respLogin['data'] === 100) {
                             context.addUser(100)
                             history.push("/")
                         }
-                        else {
+                        else if(respLogin['data'] === 200) {
                             context.addUser(200)
                             history.push("/")
+                        }
+                        else {
+                            throw(respLogin)
                         }
                     }catch(err){
                         window.alert(err)
