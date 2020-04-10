@@ -1,15 +1,10 @@
 import React, { useContext } from 'react'
 import * as bs from 'react-bootstrap'
-import campaigns from './campaigns'
 import AppContext from './context'
 import { Formik, Form, Field } from 'formik'
 
 function Left(props) {
     const context = useContext(AppContext);
-
-    if (!context.categories) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <Formik
@@ -43,10 +38,12 @@ export default Left
 
 const FilterForm = props => {
     const categories = {};
+    const context = useContext(AppContext);
 
+    
     // eslint-disable-next-line
     let total = 0
-    for (let p of campaigns) {
+    for (let p of context.campaigns) {
         categories[p.category] = (categories[p.category] || 0) + 1
         total += 1
     }
@@ -64,11 +61,26 @@ const FilterForm = props => {
                         <Input  name="title" type="text" disabled={props.form.isSubmitting} />
                         <hr/>
                         <h5 className="border p-2" ><strong>Categories</strong></h5>
-                        {Object.entries(categories).map(([cat, count], ind) => (
-                            <div key={ind}>
-                                <Checkbox name='categories' value={cat} />
+                        {context.campaigns.length === 0 && context.filtered === false &&
+                            <div style={{ textAlign: 'center' }}>
+                                <bs.Spinner
+                                    as="span"
+                                    animation="border"
+                                    role="status"
+                                    aria-hidden="true"
+                                    className="mt-4"
+                                    style={{ marginLeft: 'calc(50% - 12px)', display: 'block' }}
+                                />
+                                <p>Loading Categories...</p>
                             </div>
-                        ))}
+                        }
+                        {context.campaigns.length !== 0 &&
+                            Object.entries(categories).map(([cat, count], ind) => (
+                                <div key={ind}>
+                                    <Checkbox name='categories' value={cat} />
+                                </div>
+                            ))
+                        }
                         <hr/>
                         <h5 className="border p-2" ><strong>Goal Range</strong></h5>
                         <bs.Container>
@@ -150,7 +162,7 @@ function Checkbox(props) {
         "Sports Teams & Clubs":16,
         "Education & Learning":17,
         "Dreams Hopes & Wishes":20,
-        "Unknown":21,
+        "unknown":21,
     }
 
     return (

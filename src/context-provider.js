@@ -1,5 +1,5 @@
 import React from 'react'
-// import axios from 'axios'
+import axios from 'axios'
 import AppContext from './context'
 import App from './App'
 import campaigns from './campaigns'
@@ -12,8 +12,9 @@ export default class AppProvider extends React.Component {
             filter: this.filter,
         }
         this.state = {
-            campaigns:campaigns,
+            campaigns:[],
             numItems:15,
+            filtered:false,
         }
     }
 
@@ -64,6 +65,7 @@ export default class AppProvider extends React.Component {
         this.setState({
             campaigns: filteredCampaigns,
             numItems: 15,
+            filtered:true,
         })
     }
 
@@ -90,11 +92,15 @@ export default class AppProvider extends React.Component {
 
     async componentDidMount() {
         document.addEventListener('scroll', this.trackScrolling)
-        const cats = {}
-        for (const c of campaigns) {
-            cats[c.id] = c
-        }
+        // const cats = {}
+        // for (const c of campaigns) {
+        //     cats[c.id] = c
+        // }
+
+        const resp1 = await axios.get('https://intextwo.herokuapp.com/api/campaigns')
         
-        this.setState({ categories: cats}) 
+        console.log("resp1",resp1)
+
+        this.setState({ campaigns: resp1.data}) 
     }
 }

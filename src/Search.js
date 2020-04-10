@@ -7,8 +7,24 @@ import CampaignCard from './CampaignCard'
 
 function Search(props) {
     const context = React.useContext(AppContext)
+
+    if (context.campaigns.length === 0 && context.filtered === false) {
+        return (
+            <div style={{ textAlign: 'center' }}>
+                <bs.Spinner
+                    as="span"
+                    animation="border"
+                    role="status"
+                    aria-hidden="true"
+                    className="mt-4"
+                    style={{ marginLeft: 'calc(50% - 12px)', display: 'block' }}
+                />
+                <p>Fetching campaigns from the database...</p>
+            </div>
+        )
+    }
     
-    if (context.campaigns.length === 0){
+    if (context.campaigns.length === 0 && context.filtered === true){
         return (
             <div style={{textAlign:"center"}}>
                 <div className="mt-5">The search did not return any results</div>
