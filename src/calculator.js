@@ -15,12 +15,12 @@ function Calculator(props) {
         <bs.Container fluid className='p-0 d-flex flex-column' style={{ backgroundColor: 'white', boxShadow: "inset 0px 5px 5px #555" }}>
             <Formik
                 initialValues={{
-                    title: 'WINTER/CORONA-VIRUS HOMELESS CAMPAIGN',
-                    goal: '25000',
-                    description: 'We have more people on the street than ever Winter is a time where the homeless are really affected its never nice not seeing your family or love ones and many of the homeless have not for years but we can bring some cheer along with food clothing and even a santa with presents for all. Your donation keeps us running it fuels our bus it keep us legal on the street where we can make a difference. It pays our gas and electric this allows us to cook and buy the extras we serve up to the guys ever week over 150 are having bellies filled. We do homedrops every week to those who get into accomodation but having spent months or years on the street they often have ilness ormalnourished. We give between £40-£50 in good food and even provide TVs and Radios...we are all volunteers we are all commited to bringing support and change to Homeless   Rough Sleeper.........but only with your help.  And some info on what we have provided in our last year   11000 meals 1300 food parcels 2 ton pf food per week most of which is waste or close to sell by date 4000 beds for the night given to 350 men 27 women 19 victims of abuse/violence 7 on the night Police brought or referred 16 people.  Streetvets service for Homeless Dogs part of our Sunday Street Kitchen. . 39 active Vets/Volunteers. They have seen   registered 131 dogs in the city.',
-                    category_id: "18",
-                    has_beneficiary: "no",
-                    is_charity: "yes",
+                    title: '',
+                    goal: '',
+                    description: '',
+                    category_id: "",
+                    has_beneficiary: "",
+                    is_charity: "",
                 }}
                 validateOnChange={false}
                 validateOnBlur={false}
@@ -34,6 +34,7 @@ function Calculator(props) {
                     if (values.description === "") { errors.description = "Description is required" }
                     if (values.category_id === "") { errors.category_id = "Category is required" }
                     if (values.has_beneficiary === "") { errors.has_beneficiary = 'Please select "Yes" or "No"' }
+                    if (values.is_charity === "") { errors.is_charity = 'Please select "Yes" or "No"' }
                     setSubmitted(false)
                     //console.log(errors)
                     return errors

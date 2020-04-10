@@ -83,7 +83,13 @@ const FilterForm = props => {
                         </bs.Container>
                         <br/>
                         <hr/>
-                        <div onClick={() => {window.location.reload()}} style={{ textAlign: "center", color: "#2b2b2b", cursor:'pointer'}}>
+                        <div onClick={() => {
+                                props.form.setFieldValue("title", "")
+                                props.form.setFieldValue("categories", [])
+                                props.form.setFieldValue("min", "")
+                                props.form.setFieldValue("max", "")
+                                props.form.submitForm()
+                            }} style={{ textAlign: "center", color: "#2b2b2b", cursor:'pointer'}}>
                             <div className="my-3"  style={{boxShadow: "inset 3px 3px 4px #adb6bd", border: "#adb6bd 1px solid", marginLeft: "20%", marginRight: "20%" }}><b>Clear Filters</b></div>
                         </div>
                         <bs.Button type="submit" className="btn btn-primary btn-block mb-3 my-5" disabled={props.form.isSubmitting} style={{ margin: 'auto', display: 'block' }}>
