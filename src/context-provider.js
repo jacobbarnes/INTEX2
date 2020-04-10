@@ -2,7 +2,6 @@ import React from 'react'
 import axios from 'axios'
 import AppContext from './context'
 import App from './App'
-import campaigns from './campaigns'
 
 export default class AppProvider extends React.Component {
     constructor(props) {
@@ -12,9 +11,10 @@ export default class AppProvider extends React.Component {
             filter: this.filter,
         }
         this.state = {
-            campaigns:[],
+            campaigns:null,
             numItems:15,
             filtered:false,
+            filteredCampaigns:null,
         }
     }
 
@@ -25,7 +25,7 @@ export default class AppProvider extends React.Component {
     filter = (values) => {
         const campaignIDs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,20,]
         // //console.log("from filter", values)
-        let filteredCampaigns = campaigns
+        let filteredCampaigns = this.state.campaigns
         // //console.log(filteredCampaigns)
         
         //filter titles
@@ -48,7 +48,7 @@ export default class AppProvider extends React.Component {
             if (values.categories.indexOf(21) !== -1){
                 
                 filteredCampaigns = filteredCampaigns.filter(campaign => {
-                    if (values.categories.indexOf(parseInt(campaign.category_id)) !== -1 || campaignIDs.indexOf(parseInt(campaign.category_id)) === -1){
+                    if (values.categories.indexOf(campaign.category_id) !== -1 || campaignIDs.indexOf(parseInt(campaign.category_id)) === -1){
                         return true
                     }
                     else{
@@ -57,13 +57,13 @@ export default class AppProvider extends React.Component {
                 })
             }
             else{
-                filteredCampaigns = filteredCampaigns.filter(campaign => values.categories.indexOf(parseInt(campaign.category_id)) !== -1)
+                filteredCampaigns = filteredCampaigns.filter(campaign => values.categories.indexOf(campaign.category_id) !== -1)
             }
             //console.log(filteredCampaigns)
         }
 
         this.setState({
-            campaigns: filteredCampaigns,
+            filteredCampaigns: filteredCampaigns,
             numItems: 15,
             filtered:true,
         })

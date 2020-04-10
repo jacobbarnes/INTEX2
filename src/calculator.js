@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import * as bs from 'react-bootstrap'
-import campaigns from './campaigns'
 import { Formik, Form, Field, ErrorMessage} from 'formik'
 let req = require("request")
 
@@ -88,7 +87,7 @@ function Calculator(props) {
                     req(options, (err, res, body) => {
                         if (!err && res.statusCode === 200) {
                             //console.log("Amount API call results:", body)
-                            setAmountResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][9]))
+                            setAmountResponse((Math.round(JSON.parse(body).Results.output1.value.Values[0][9])).toString())
 
                         } else {
                             //console.log("The request failed with status code: " + res.statusCode);
@@ -142,7 +141,7 @@ function Calculator(props) {
                     req(options, (err, res, body) => {
                         if (!err && res.statusCode === 200) {
                             //console.log("Donors API call results:", body)
-                            setDonorsResponse(Math.round(JSON.parse(body).Results.output1.value.Values[0][10]))
+                            setDonorsResponse((Math.round(JSON.parse(body).Results.output1.value.Values[0][10])).toString())
 
                         } else {
                             //console.log("The request failed with status code: " + res.statusCode);
@@ -161,16 +160,6 @@ function Calculator(props) {
 export default Calculator
 
 const CalcForm = props => {
-    const categories = {};
-
-    //console.log("From CalcForm",props)
-    // eslint-disable-next-line
-    let total = 0
-    for (let p of campaigns) {
-        categories[p.category] = (categories[p.category] || 0) + 1
-        total += 1
-    }
-
     return (
         <bs.Row noGutters className='py-5' style={{ paddingLeft: '10%', paddingRight: '10%' }}>
             <bs.Col md='4'>

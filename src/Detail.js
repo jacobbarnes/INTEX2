@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import * as bs from 'react-bootstrap'
-import { useRouteMatch, useHistory } from 'react-router-dom'
-import AppContext from './context'
+import { useHistory } from 'react-router-dom'
 let req = require("request")
 
 function Detail(props) {
-    const context = React.useContext(AppContext)
-    const match = useRouteMatch("/campaign/:cid")
-    const c = context.campaigns.find(c => c.id === match.params.cid)
+    // const c = context.campaigns.find(c => props.c.id === match.params.cid)
     let history = useHistory()
     let categories = {
         2: "Accidents & Emergencies",
@@ -34,8 +31,8 @@ function Detail(props) {
         history.push("/search")
     }
 
-    let amountRaised = c.current_amount / c.goal
-    let popularity = c.social_share_total >= 1000 ? "High" : c.social_share_total >= 100 ? "Medium" : "Low"
+    let amountRaised = props.c.current_amount / props.c.goal
+    let popularity = props.c.social_share_total >= 1000 ? "High" : props.c.social_share_total >= 100 ? "Medium" : "Low"
 
     let fraudLikelihood = ""
     if (fraudResponse) {
@@ -104,11 +101,11 @@ function Detail(props) {
                     ],
                     "Values": [
                         [
-                            c.donators,
-                            c.days_active,
-                            c.title,
-                            c.description,
-                            c.visible_in_search,
+                            props.c.donators,
+                            props.c.days_active,
+                            props.c.title,
+                            props.c.description,
+                            props.c.visible_in_search,
                             0,
                         ]
                     ]
@@ -146,27 +143,27 @@ function Detail(props) {
 
             <bs.Row className='mt-5'>
                 <bs.Col style={{ textAlign: 'center' }}>
-                    <h1>{c.title}</h1>
+                    <h1>{props.c.title}</h1>
                     <hr style={{ width: '75%' }} />
                 </bs.Col>
             </bs.Row>
             <bs.Row className="mx-5 mt-2">
                 <bs.Col md='3'>
-                    <img style={{ width: "100%" }} alt={c.title} src={c.campaign_image_url} />
+                    <img style={{ width: "100%" }} alt={props.c.title} src={props.c.campaign_image_url} />
                 </bs.Col>
                 <bs.Col md='6'>
                     <bs.Row className='px-0' style={{ textAlign: 'center' }}>
                         <bs.Col md='6' className='pl-0'>
-                            <h5 className='my-4'><strong>Amount Raised:</strong> {`$${c.current_amount} / $${c.goal}`}</h5>
-                            <h5 className='my-4'><strong>Donators:</strong> {c.donators}</h5>
-                            <h5 className='my-4'><strong>Days Active:</strong> {c.days_active}</h5>
-                            <h5 className='my-4'><strong>Category:</strong> {categories[c.category_id] ? categories[c.category_id] : "Other"}</h5>
+                            <h5 className='my-4'><strong>Amount Raised:</strong> {`$${props.c.current_amount} / $${props.c.goal}`}</h5>
+                            <h5 className='my-4'><strong>Donators:</strong> {props.c.donators}</h5>
+                            <h5 className='my-4'><strong>Days Active:</strong> {props.c.days_active}</h5>
+                            <h5 className='my-4'><strong>Category:</strong> {categories[props.c.category_id] ? categories[props.c.category_id] : "Other"}</h5>
                         </bs.Col>
                         <bs.Col md='6' className='pr-0'>
-                            <h5 className='my-4'><strong>Status:</strong> {c.status}</h5>
-                            <h5 className='my-4'><strong>Deactivated:</strong> {c.deactivated}</h5>
-                            <h5 className='my-4'><strong>Is Charity:</strong> {c.is_charity}</h5>
-                            <h5 className='my-4'><strong>Has Beneficiary:</strong> {c.has_beneficiary}</h5>
+                            <h5 className='my-4'><strong>Status:</strong> {props.c.status}</h5>
+                            <h5 className='my-4'><strong>Deactivated:</strong> {props.c.deactivated.toString()}</h5>
+                            <h5 className='my-4'><strong>Is Charity:</strong> {props.c.is_charity.toString()}</h5>
+                            <h5 className='my-4'><strong>Has Beneficiary:</strong> {props.c.has_beneficiary.toString()}</h5>
                         </bs.Col>
                     </bs.Row>
                 </bs.Col>
@@ -189,7 +186,7 @@ function Detail(props) {
                         </h3>
                         <hr />
                         <h4>Amount Raised:</h4>
-                        <bs.ProgressBar striped variant={amountRaised > .67 ? "success" : amountRaised > .33 ? "warning" : "danger"} style={{ borderBlockWidth: '100%' }} now={c.current_amount / c.goal * 100} ></bs.ProgressBar>
+                        <bs.ProgressBar striped variant={amountRaised > .67 ? "success" : amountRaised > .33 ? "warning" : "danger"} style={{ borderBlockWidth: '100%' }} now={props.c.current_amount / props.c.goal * 100} ></bs.ProgressBar>
                         <br />
                         <h4>Popularity:</h4>
                         <h5 className={'text-' + color(popularity,false)}>{popularity}</h5>
@@ -214,7 +211,7 @@ function Detail(props) {
                 <bs.Col>
 
                     <h3>Description</h3>
-                    <div>{c.description}</div>
+                    <div>{props.c.description}</div>
                     <bs.Button
                         className="bg-primary my-5"
                         style={{ width: "100px", margin: "auto", display: "block", border: "white 1px solid" }}
